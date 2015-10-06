@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Pone;
+import vue.GameMenu;
 import vue.GamePane;
 
 
@@ -22,6 +23,7 @@ public class Main extends Application {
     private final BorderPane root = new BorderPane();
     private final Scene scene = new Scene(root, 1000, 500);
     private final GamePane gamePane = new GamePane(graphics, scene);
+    private final GameMenu gameMenu = new GameMenu();
     
     
     @Override
@@ -31,13 +33,14 @@ public class Main extends Application {
         graphics.add(pc1);
 
         root.setCenter(gamePane);
-
+        root.setTop(gameMenu);
+        
         p1.xPercentageProperty().set(0.5);
         p1.yPercentageProperty().set(0.5);
         p1.xProperty().set(500);
         p1.yProperty().set(250);
-        p1.wProperty().bind(scene.widthProperty().divide(7));
-        p1.hProperty().bind(scene.heightProperty().divide(6));
+        p1.widthProperty().bind(scene.widthProperty().divide(7));
+        p1.heightProperty().bind(scene.heightProperty().divide(6));
 
         scene.widthProperty().addListener((ObservableValue<? extends Number> observableValue, 
                 Number oldSceneWidth, Number newSceneWidth) -> {
