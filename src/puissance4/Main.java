@@ -1,5 +1,6 @@
 package puissance4;
 
+import ctrl.GameGridControler;
 import ctrl.GraphicControler;
 import ctrl.PoneControler;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.GameGrid;
 import model.Pone;
 import vue.GameMenu;
 import vue.GamePane;
@@ -19,6 +21,7 @@ import vue.GamePane;
  * @author 2311sedoore
  */
 public class Main extends Application {
+    // Les éléments graphiques
     private List<GraphicControler> graphics = new ArrayList<GraphicControler>();
     private final BorderPane root = new BorderPane();
     private final Scene scene = new Scene(root, 1000, 500);
@@ -29,8 +32,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         Pone p1 = new Pone();
+        GameGrid gameGrid = new GameGrid();
+        
         GraphicControler pc1 = new PoneControler(p1);
+        GraphicControler pc2 = new GameGridControler(gameGrid);
+        
         graphics.add(pc1);
+        graphics.add(pc2);
 
         root.setCenter(gamePane);
         root.setTop(gameMenu);
@@ -44,11 +52,11 @@ public class Main extends Application {
 
         scene.widthProperty().addListener((ObservableValue<? extends Number> observableValue, 
                 Number oldSceneWidth, Number newSceneWidth) -> {
-            gamePane.sceenWidthResize(oldSceneWidth, newSceneWidth);
+            gamePane.sceneWidthResize(oldSceneWidth, newSceneWidth);
         });
         scene.heightProperty().addListener((ObservableValue<? extends Number> observableValue, 
                 Number oldSceneHeight, Number newSceneHeight) -> {
-            gamePane.sceenHeightResize(oldSceneHeight, newSceneHeight);
+            gamePane.sceneHeightResize(oldSceneHeight, newSceneHeight);
         });
 
         primaryStage.setTitle("Puissance 4");
