@@ -44,14 +44,4 @@ public class PoneControler implements GraphicControler{
         return pone.isOn(x, y);
     }
 
-    @Override
-    public void sceenWidthResize(Number oldWidth, Number newWidth) {
-
-    }
-
-    @Override
-    public void sceenHeightResize(Number oldHeight, Number newHeight) {
-
-    }
-
 }

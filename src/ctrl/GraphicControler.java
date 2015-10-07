@@ -18,8 +18,4 @@ public interface GraphicControler {
     void moveTo(Double x, Double y, Scene scene);
 
     boolean isOn(Double x, Double y);
-    
-    void sceenWidthResize(Number oldWidth, Number newWidth);
-    
-    void sceenHeightResize(Number oldHeight, Number newHeight);
 }

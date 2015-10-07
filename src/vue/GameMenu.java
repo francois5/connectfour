@@ -6,10 +6,9 @@
 package vue;
 
 import javafx.application.Platform;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import model.Instru;
 
 /**
  *
@@ -27,8 +26,9 @@ public class GameMenu extends Pane {
     private final RadioMenuItem normal;
     private final RadioMenuItem difficult;
     private final CheckMenuItem on;
+    private Instru instru;
     
-    public GameMenu() {
+    public GameMenu(Instru instru) {
         // barre de menu
         menuBar = new MenuBar();
         
@@ -66,6 +66,7 @@ public class GameMenu extends Pane {
                 new SeparatorMenuItem(), exit);
         soundMenu.getItems().addAll(on);
         
+        this.instru = instru;
         addKeyListeners();
         
     }
@@ -73,6 +74,10 @@ public class GameMenu extends Pane {
     private void addKeyListeners() {
         exit.setOnAction(e -> {
             Platform.exit();
+        });
+        
+        menuBar.setOnMousePressed(e -> {
+            instru.note_on(62);
         });
     }
 }

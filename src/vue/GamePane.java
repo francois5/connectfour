@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import model.Instru;
 
 /**
  *
@@ -22,6 +23,7 @@ public class GamePane extends Pane {
     Double x0, y0;
     private Scene scene;
     GraphicControler selection;
+    private Instru instru;
 
     private final Canvas canvas = new Canvas();
 
@@ -40,9 +42,9 @@ public class GamePane extends Pane {
                 }
             }
         });
-
-        this.setOnMouseReleased((MouseEvent e) -> {
-            
+        
+        this.setOnMousePressed(e-> {
+            instru.note_on(62);
         });
 
         this.setOnMouseDragged((MouseEvent e) -> {
@@ -58,18 +60,6 @@ public class GamePane extends Pane {
 
     public GamePane() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    public void sceenWidthResize(Number oldWidth, Number newWidth) {
-        for (GraphicControler ctrl : graphics) {
-            ctrl.sceenWidthResize(oldWidth, newWidth);
-        }
-    }
-
-    public void sceenHeightResize(Number oldHeight, Number newHeight) {
-        for (GraphicControler ctrl : graphics) {
-            ctrl.sceenHeightResize(oldHeight, newHeight);
-        }
     }
     
     public void repaint() {

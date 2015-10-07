@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.GameGrid;
+import model.Instru;
 import model.Pone;
 import vue.GameMenu;
 import vue.GamePane;
@@ -26,11 +27,14 @@ public class Main extends Application {
     private final BorderPane root = new BorderPane();
     private final Scene scene = new Scene(root, 1000, 500);
     private final GamePane gamePane = new GamePane(graphics, scene);
-    private final GameMenu gameMenu = new GameMenu();
-    
+    private final Instru instru = new Instru();
+    private final GameMenu gameMenu = new GameMenu(instru);
     
     @Override
     public void start(Stage primaryStage) {
+        // Déclenche une note de test
+        instru.note_on(60);
+        
         Pone p1 = new Pone();
         GameGrid gameGrid = new GameGrid();
         
@@ -49,15 +53,6 @@ public class Main extends Application {
         p1.yProperty().set(250);
         p1.widthProperty().bind(scene.widthProperty().divide(7));
         p1.heightProperty().bind(scene.heightProperty().divide(6));
-
-        scene.widthProperty().addListener((ObservableValue<? extends Number> observableValue, 
-                Number oldSceneWidth, Number newSceneWidth) -> {
-            gamePane.sceneWidthResize(oldSceneWidth, newSceneWidth);
-        });
-        scene.heightProperty().addListener((ObservableValue<? extends Number> observableValue, 
-                Number oldSceneHeight, Number newSceneHeight) -> {
-            gamePane.sceneHeightResize(oldSceneHeight, newSceneHeight);
-        });
 
         primaryStage.setTitle("Puissance 4");
         primaryStage.setScene(scene);
