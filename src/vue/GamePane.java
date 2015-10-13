@@ -4,6 +4,7 @@ import model.Pone;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -23,9 +24,25 @@ public class GamePane extends Pane {
         super();
     }
 
-    public void init(List<Shape> grid, List<Pone> pones) {
-        this.grid = grid;
-        this.pones = pones;
+    public void init(Scene scene) {
+        // buttom line
+        grid.add(new Rectangle(scene.getWidth(), 5));
+        grid.get(grid.size() - 1).setTranslateY(scene.getHeight() - 30);
+        
+        // collumns
+        for (int i = 0; i < 8; ++i) {
+            grid.add(new Rectangle(5, (scene.getHeight()-25) / 1.4));
+            grid.get(grid.size() - 1).setTranslateX(((scene.getWidth() / 7 ) * i)-(i-1));
+            grid.get(grid.size() - 1).setTranslateY((scene.getHeight()-25) / 3.6);
+        }
+        this.getChildren().addAll(grid);
+        
+        // pones
+        for(int i = 0; i < 42; ++i)
+            pones.add(new Pone(grid, this));
+        for (Pone p : pones)
+            this.getChildren().addAll(p.getPoneShape());
+        
         this.widthProperty().addListener((ObservableValue<? extends Number> observableValue,
                 Number oldSceneWidth, Number newSceneWidth) -> {
                     for (Pone p : pones) {
@@ -43,12 +60,7 @@ public class GamePane extends Pane {
     }
     
     @Override
-    protected void layoutChildren() {
-        
-        
-        
-        
-    }
+    protected void layoutChildren() { }
 
     public void update() {
         for(Pone p : pones) {
