@@ -1,134 +1,133 @@
 package model;
 
-import java.util.Observable;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
+import java.util.List;
+import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
+import vue.GamePane;
 
 /**
  *
  * @author localwsp
  */
-public class Pone extends Observable implements Graphic {
-
-    private DoubleProperty x = new SimpleDoubleProperty(); // Le coin supérieur gauche du carré englobant
-    private DoubleProperty y = new SimpleDoubleProperty();
-    private DoubleProperty xPercentage = new SimpleDoubleProperty();
-    private DoubleProperty yPercentage = new SimpleDoubleProperty();
-    private DoubleProperty width = new SimpleDoubleProperty();
-    private DoubleProperty height = new SimpleDoubleProperty();
-
-    public Pone(int x, int y, int w, int h) {
-        this.x.set(x);
-        this.y.set(y);
-        this.width.set(w);
-        this.height.set(h);
-    }
-
-    public Pone() {
-        this(0, 0, 50, 50);
-    }
-
-    public DoubleProperty xProperty() {
-        return x;
-    }
-
-    public DoubleProperty yProperty() {
-        return y;
-    }
-
-    public DoubleProperty widthProperty() {
-        return width;
-    }
-
-    public DoubleProperty heightProperty() {
-        return height;
-    }
-
-    public DoubleProperty xPercentageProperty() {
-        return xPercentage;
-    }
-
-    public DoubleProperty yPercentageProperty() {
-        return yPercentage;
+public class Pone {
+    private Ellipse poneShape;
+    private List<Shape> grid;
+    private Pane parent;
+    
+    private Double xPercentage;
+    private Double yPercentage;
+    private boolean physicsEnable = false;
+    private int speed;
+    private int time;
+    private int g = 9;
+    
+    public Pone(List<Shape> grid, Pane parent) {
+        this.parent = parent;
+        this.grid = grid;
+        poneShape = new Ellipse();
+        xPercentage = 0d;
+        yPercentage = 0d;
+        
+        poneShape.radiusXProperty().bind(parent.widthProperty().divide(16));
+        poneShape.radiusYProperty().bind(parent.heightProperty().divide(16));
+        
+        setDragListeners(poneShape);
+        
+        enablePhysics();
     }
     
-    @Override
-    public Double getX() {
-        return x.get();
-    }
-
-    @Override
-    public Double getY() {
-        return y.get();
-    }
-
-    @Override
-    public Double getWidth() {
-        return width.get();
-    }
-
-    @Override
-    public Double getHeight() {
-        return height.get();
-    }
-
-    @Override
-    public void scale(Double factor) {
-        width.set(width.get() * factor);
-        height.set(height.get() * factor);
-    }
-
-    @Override
-    public void move(Double directionX, Double directionY, Scene scene) {
-        x.set(x.get()+ directionX);
-        y.set(y.get() + directionY);
-        recalculatePercentages(scene);
-    }
-
-    @Override
-    public void moveTo(Double x, Double y, Scene scene) {
-        this.x.set(x);
-        this.y.set(y);
-        recalculatePercentages(scene);
+    public Shape getPoneShape() {
+        return poneShape;
     }
     
-    private void recalculatePercentages(Scene scene) {
-        
-        this.xPercentage.set(x.get()/scene.getWidth());
-        x.set(scene.getWidth()*xPercentage.get());
-        
-        this.yPercentage.set(y.get()/scene.getHeight());
-        y.set(scene.getHeight()*yPercentage.get());
-    }
+    public void setDragListeners(final Shape e) {
+        final Delta dragDelta = new Delta();
 
-    @Override
-    public boolean isOn(Double x, Double y) {
-        // ellipse x and y radius
-        Double rx = width.get()/2;
-        Double ry = height.get()/2;
-        // ellipse center
-        Double h = this.x.get() + rx;
-        Double k = this.y.get() + ry;
-        
-        return isOnEllipse(x, y, h, k, rx, ry);
+        e.setOnMousePressed((MouseEvent mouseEvent) -> {
+            disablePhysics();
+            dragDelta.x = e.getTranslateX() - mouseEvent.getSceneX();
+            dragDelta.y = e.getTranslateY() - mouseEvent.getSceneY();
+            e.setCursor(Cursor.NONE);
+        });
+        e.setOnMouseReleased((MouseEvent mouseEvent) -> {
+            enablePhysics();
+            e.setCursor(Cursor.HAND);
+        });
+        e.setOnMouseDragged((MouseEvent mouseEvent) -> {
+            e.setTranslateX(mouseEvent.getSceneX() + dragDelta.x);
+            e.setTranslateY(mouseEvent.getSceneY() + dragDelta.y);
+            
+            recalculatePercentages();
+            
+            this.poneShape.setFill(Color.BLACK);
+            checkBounds(e, grid);
+            checkBounds(e, ((GamePane)parent).getPones());
+        });
     }
     
-    private boolean isOnEllipse(Double x, Double y, Double h, Double k, Double rx, Double ry) {
-        if(rx <= 0 || ry <= 0) 
-            return false;
-        // (x-h)²/rx² + (y-k)²/ry² <= 1
-        return ((((x-h)*(x-h))/(rx*rx)) + (((y-k)*(y-k))/(ry*ry))) <= 1;
+    // check collision
+    private void checkBounds(Shape e, List<Shape> shapes) {
+        for (Shape s : shapes) {
+            if (s != e) {
+                Shape path = Path.intersect(e, s);
+                if (!path.getBoundsInParent().isEmpty()) {
+                    e.setFill(Color.RED);
+                    disablePhysics();
+                }
+            }
+        }
     }
 
-    @Override
-    public void paintOn(GraphicsContext gc) {
-        gc.setFill(Color.RED);
-        gc.fillOval(gc.getCanvas().getWidth()*xPercentage.get(), 
-                gc.getCanvas().getHeight()*yPercentage.get(), width.get(), height.get());
-        x.set(gc.getCanvas().getWidth()*xPercentage.get());
-        y.set(gc.getCanvas().getHeight()*yPercentage.get());
+    public void notifySceneWidth(Double oldSceneWidth, Double newSceneWidth) {
+        poneShape.setTranslateX(newSceneWidth*xPercentage);
+    }
+
+    public void notifySceneHeight(Double oldSceneHeight, Double newSceneHeight) {
+        poneShape.setTranslateY(newSceneHeight*yPercentage);
+    }
+    
+    private void recalculatePercentages() {
+        this.xPercentage = poneShape.getTranslateX()/parent.getWidth();
+        this.yPercentage = poneShape.getTranslateY()/parent.getHeight();
+    }
+
+    public void update() {
+        if(physicsEnable) {
+            ++time;
+            speed = gravitationalAcceleration(speed);
+            this.poneShape.setTranslateY(this.poneShape.getTranslateY() + (speed/1000));
+            recalculatePercentages();
+            this.poneShape.setFill(Color.BLACK);
+            checkBounds(this.poneShape, this.grid);
+            checkBounds(this.poneShape, ((GamePane)parent).getPones());
+            if(!physicsEnable)
+                playCollisionSound();
+        }
+    }
+
+    private void enablePhysics() {
+        speed = 0;
+        time = 0;
+        physicsEnable = true;
+    }
+    private void disablePhysics() {
+        physicsEnable = false;
+    }
+
+    private int gravitationalAcceleration(int speed) {
+        return ((g)*(time) + speed);
+    }
+
+    private void playCollisionSound() {
+        ((GamePane)parent).getInstru().note_on(time);
+    }
+    
+    class Delta {
+        double x, y;
     }
 }

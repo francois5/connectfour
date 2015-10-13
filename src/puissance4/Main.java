@@ -1,16 +1,14 @@
 package puissance4;
 
-import ctrl.GameGridControler;
-import ctrl.GraphicControler;
-import ctrl.PoneControler;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
-import model.GameGrid;
 import model.Instru;
 import model.Pone;
 import vue.GameMenu;
@@ -22,43 +20,49 @@ import vue.GamePane;
  * @author 2311sedoore
  */
 public class Main extends Application {
-    // Les éléments graphiques
-    private List<GraphicControler> graphics = new ArrayList<GraphicControler>();
-    private final BorderPane root = new BorderPane();
-    private final Scene scene = new Scene(root, 1000, 500);
-    private final GamePane gamePane = new GamePane(graphics, scene);
+    private BorderPane root = new BorderPane();
+    private GamePane gamePane = new GamePane();
     private final Instru instru = new Instru();
     private final GameMenu gameMenu = new GameMenu(instru);
-    
-    @Override
-    public void start(Stage primaryStage) {
-        // Déclenche une note de test
-        instru.note_on(60);
-        
-        Pone p1 = new Pone();
-        GameGrid gameGrid = new GameGrid();
-        
-        GraphicControler pc1 = new PoneControler(p1);
-        GraphicControler pc2 = new GameGridControler(gameGrid);
-        
-        graphics.add(pc1);
-        graphics.add(pc2);
 
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        
+        // todo: put pone stocks on the sides
+        List<Shape> grid = new ArrayList<>();
+        List<Pone> pones = new ArrayList<>();
         root.setCenter(gamePane);
         root.setTop(gameMenu);
+        Scene scene = new Scene(root, 800, 800);
+        // buttom line
+        grid.add(new Rectangle(scene.getWidth(), 5));
+        grid.get(grid.size() - 1).setTranslateY(scene.getHeight() - 5);
         
-        p1.xPercentageProperty().set(0.5);
-        p1.yPercentageProperty().set(0.5);
-        p1.xProperty().set(500);
-        p1.yProperty().set(250);
-        p1.widthProperty().bind(scene.widthProperty().divide(7));
-        p1.heightProperty().bind(scene.heightProperty().divide(6));
-
+        // collumns
+        for (int i = 0; i < 8; ++i) {
+            grid.add(new Rectangle(5, scene.getHeight() / 1.4));
+            grid.get(grid.size() - 1).setTranslateX(((scene.getWidth() / 7 ) * i)-(i-1));
+            grid.get(grid.size() - 1).setTranslateY(scene.getHeight() / 3.6);
+        }
+        gamePane.getChildren().addAll(grid);
+        
+        // pones
+        for(int i = 0; i < 42; ++i)
+            pones.add(new Pone(grid, gamePane));
+        for (Pone p : pones)
+            gamePane.getChildren().addAll(p.getPoneShape());
+        
+        MyGameLoop loop = new MyGameLoop(gamePane);
+        loop.start();
+        
+        gamePane.init(grid, pones);
+        
+        
         primaryStage.setTitle("Puissance 4");
         primaryStage.setScene(scene);
         primaryStage.show();
-        gamePane.repaint();
     }
+    
 
     /**
      * @param args the command line arguments
