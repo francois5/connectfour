@@ -20,14 +20,16 @@ public class PoneStock {
     public PoneStock(GameGrid gameGrid, GamePane gamePane) {
         this.gameGrid = gameGrid;
         this.gamePane = gamePane;
-        this.stock = FXCollections.observableArrayList();
+        this.stock = fillPoneStock();
+        
     }
     
-    private void fillPoneStock() {
+    private ObservableList fillPoneStock() {
         ObservableList<Pone> pones = FXCollections.observableArrayList();
         for(int i = 0; i < NBPONE; ++i) {
             pones.add(new Pone(gameGrid.getGrid(), gamePane));
         }
+        return pones;
     }
     
     // Retourne la forme du premier pion

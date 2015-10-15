@@ -31,14 +31,8 @@ public class GamePane extends Pane {
         this.getChildren().add(gameGrid);
         
         // pones
-        for(int i = 0; i < 42; ++i)
-            pones.add(new Pone(gameGrid.getGrid(), this));
-        for (Pone p : pones)
-            this.getChildren().add(p.getPoneShape());
-        /*
         for (Pone p : poneStock.getStock())
             this.getChildren().add(p.getPoneShape());
-        */
         
         this.widthProperty().addListener((ObservableValue<? extends Number> observableValue,
                 Number oldSceneWidth, Number newSceneWidth) -> {
