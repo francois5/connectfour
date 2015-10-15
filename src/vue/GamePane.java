@@ -25,7 +25,8 @@ public class GamePane extends Pane {
     }
 
     public void init(Scene scene) {
-        GameGrid gameGrid = new GameGrid(scene);
+        // Ajoute la grille sur le gamePane
+        GameGrid gameGrid = new GameGrid(600,600);
         this.getChildren().add(gameGrid);
         
         // pones

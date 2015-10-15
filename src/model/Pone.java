@@ -33,8 +33,8 @@ public class Pone {
         xPercentage = 0d;
         yPercentage = 0d;
         
-        poneShape.radiusXProperty().bind(parent.widthProperty().divide(16));
-        poneShape.radiusYProperty().bind(parent.heightProperty().divide(16));
+        poneShape.radiusXProperty().bind(parent.widthProperty().divide(24));
+        poneShape.radiusYProperty().bind(parent.heightProperty().divide(24));
         
         setDragListeners(poneShape);
         

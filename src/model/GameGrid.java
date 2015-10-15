@@ -17,23 +17,28 @@ import javafx.scene.shape.Shape;
  * @author seb
  */
 public class GameGrid extends Pane{
+    private double width;
+    private double height;
     private List<Shape> grid = new ArrayList<>();
     
-    public GameGrid(Scene scene) {
-        initGrid(scene);
+    public GameGrid(double width, double height) {
+        this.width = width;
+        this.height = height;
+        initGrid();
     }
     
-    public void initGrid(Scene scene) {
+    public void initGrid() {
         // bottom line
-        grid.add(new Rectangle(scene.getWidth(), 5));
-        grid.get(grid.size() - 1).setTranslateY(scene.getHeight() - 30);
+        grid.add(new Rectangle(width, 5));
+        grid.get(grid.size() - 1).setTranslateY(height + 165);
         
         // collumns
         for (int i = 0; i < 8; ++i) {
-            grid.add(new Rectangle(5, (scene.getHeight()-25) / 1.4));
-            grid.get(grid.size() - 1).setTranslateX(((scene.getWidth() / 7 ) * i)-(i-1));
-            grid.get(grid.size() - 1).setTranslateY((scene.getHeight()-25) / 3.6);
+            grid.add(new Rectangle(5, height));
+            grid.get(grid.size() - 1).setTranslateX(((width / 7 ) * i)-(i-1));
+            grid.get(grid.size() - 1).setTranslateY((height) / 3.6);
         }
+        // Ajoute les rectangles sur la grille
         this.getChildren().addAll(grid);
     }
     
