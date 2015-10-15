@@ -1,5 +1,6 @@
 package vue;
 
+import model.GameGrid;
 import model.Pone;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,6 @@ import model.Instru;
  */
 public class GamePane extends Pane {
 
-    private List<Shape> grid = new ArrayList<>();
     private List<Pone> pones = new ArrayList<>();
     private final Instru instru = new Instru();
     
@@ -25,21 +25,12 @@ public class GamePane extends Pane {
     }
 
     public void init(Scene scene) {
-        // buttom line
-        grid.add(new Rectangle(scene.getWidth(), 5));
-        grid.get(grid.size() - 1).setTranslateY(scene.getHeight() - 30);
-        
-        // collumns
-        for (int i = 0; i < 8; ++i) {
-            grid.add(new Rectangle(5, (scene.getHeight()-25) / 1.4));
-            grid.get(grid.size() - 1).setTranslateX(((scene.getWidth() / 7 ) * i)-(i-1));
-            grid.get(grid.size() - 1).setTranslateY((scene.getHeight()-25) / 3.6);
-        }
-        this.getChildren().addAll(grid);
+        GameGrid gameGrid = new GameGrid(scene);
+        this.getChildren().add(gameGrid);
         
         // pones
         for(int i = 0; i < 42; ++i)
-            pones.add(new Pone(grid, this));
+            pones.add(new Pone(gameGrid.getGrid(), this));
         for (Pone p : pones)
             this.getChildren().addAll(p.getPoneShape());
         
