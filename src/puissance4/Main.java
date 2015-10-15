@@ -31,7 +31,7 @@ public class Main extends Application {
         MyGameLoop loop = new MyGameLoop(gamePane);
         loop.start();
         
-        gamePane.init(scene);
+        gamePane.init();
 
         primaryStage.setTitle("Puissance 4");
         primaryStage.setScene(scene);

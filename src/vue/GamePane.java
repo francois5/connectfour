@@ -10,13 +10,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import model.Instru;
+import model.PoneStock;
 
 /**
  *
  * @author localwsp
  */
 public class GamePane extends Pane {
-
+    private GameGrid gameGrid = new GameGrid(600,600);
+    private PoneStock poneStock = new PoneStock(gameGrid, this);
     private List<Pone> pones = new ArrayList<>();
     private final Instru instru = new Instru();
     
@@ -24,16 +26,19 @@ public class GamePane extends Pane {
         super();
     }
 
-    public void init(Scene scene) {
+    public void init() {
         // Ajoute la grille sur le gamePane
-        GameGrid gameGrid = new GameGrid(600,600);
         this.getChildren().add(gameGrid);
         
         // pones
         for(int i = 0; i < 42; ++i)
             pones.add(new Pone(gameGrid.getGrid(), this));
         for (Pone p : pones)
-            this.getChildren().addAll(p.getPoneShape());
+            this.getChildren().add(p.getPoneShape());
+        /*
+        for (Pone p : poneStock.getStock())
+            this.getChildren().add(p.getPoneShape());
+        */
         
         this.widthProperty().addListener((ObservableValue<? extends Number> observableValue,
                 Number oldSceneWidth, Number newSceneWidth) -> {
