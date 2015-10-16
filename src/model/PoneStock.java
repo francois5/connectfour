@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.shape.Shape;
@@ -25,22 +24,6 @@ public class PoneStock {
         
     }
     
-    public void init(GamePane aThis) {
-        gamePane.widthProperty().addListener((ObservableValue<? extends Number> observableValue,
-                Number oldSceneWidth, Number newSceneWidth) -> {
-                    for (Pone p : stock) {
-                        p.notifySceneWidth((Double) oldSceneWidth, (Double) newSceneWidth);
-                    }
-                });
-
-        gamePane.heightProperty().addListener((ObservableValue<? extends Number> observableValue,
-                Number oldSceneHeight, Number newSceneHeight) -> {
-                    for (Pone p : stock) {
-                        p.notifySceneHeight((Double) oldSceneHeight, (Double) newSceneHeight);
-                    }
-                });
-    }
-    
     private ObservableList fillPoneStock() {
         ObservableList<Pone> pones = FXCollections.observableArrayList();
         for(int i = 0; i < NBPONE; ++i) {
@@ -54,21 +37,8 @@ public class PoneStock {
         return stock.get(0).getPoneShape();
     }
     
-    public List<Shape> getPoneShapes() {
-        List<Shape> shapes = new ArrayList<>();
-        for(Pone p : stock)
-            shapes.add(p.getPoneShape());
-        return shapes;
-    }
-    
     // Retourne le stock de pions
     public ObservableList<Pone> getStock() {
         return stock;
-    }
-
-    public void update() {
-        for(Pone p : stock) {
-            p.update();
-        }
     }
 }
