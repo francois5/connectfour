@@ -5,9 +5,7 @@ import model.Pone;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import model.Instru;
 import model.PoneStock;
@@ -17,9 +15,8 @@ import model.PoneStock;
  * @author localwsp
  */
 public class GamePane extends Pane {
-    private GameGrid gameGrid = new GameGrid(600,600);
+    private GameGrid gameGrid = new GameGrid(600,600, this);
     private PoneStock poneStock = new PoneStock(gameGrid, this);
-    private List<Pone> pones = new ArrayList<>();
     private final Instru instru = new Instru();
     
     public GamePane() {
@@ -36,14 +33,14 @@ public class GamePane extends Pane {
         
         this.widthProperty().addListener((ObservableValue<? extends Number> observableValue,
                 Number oldSceneWidth, Number newSceneWidth) -> {
-                    for (Pone p : pones) {
+                    for (Pone p : poneStock.getStock()) {
                         p.notifySceneWidth((Double) oldSceneWidth, (Double) newSceneWidth);
                     }
                 });
 
         this.heightProperty().addListener((ObservableValue<? extends Number> observableValue,
                 Number oldSceneHeight, Number newSceneHeight) -> {
-                    for (Pone p : pones) {
+                    for (Pone p : poneStock.getStock()) {
                         p.notifySceneHeight((Double) oldSceneHeight, (Double) newSceneHeight);
                     }
                 });
@@ -54,14 +51,14 @@ public class GamePane extends Pane {
     protected void layoutChildren() { }
 
     public void update() {
-        for(Pone p : pones) {
+        for(Pone p : poneStock.getStock()) {
             p.update();
         }
     }
 
     public List<Shape> getPones() {
         List<Shape> shapes = new ArrayList<>();
-        for(Pone p : pones)
+        for(Pone p : poneStock.getStock())
             shapes.add(p.getPoneShape());
         return shapes;
     }
