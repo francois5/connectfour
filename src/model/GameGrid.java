@@ -19,19 +19,29 @@ import javafx.scene.shape.Shape;
  * @author seb
  */
 public class GameGrid extends Pane{
+    public static int NBCOLUMNS = 8;
+    
     private DoubleProperty width;
     private DoubleProperty height;
-    private List<Shape> grid = new ArrayList<>();
+    private List<Shape> grid;
     private Pane parent;
     
     public GameGrid(double width, double height, Pane parent) {
         this.parent = parent;
         this.width = new SimpleDoubleProperty(width);
         this.height = new SimpleDoubleProperty(height);
-        initGrid();
-        setResizable();
+        this.grid = buildGameGrid();
+        this.getChildren().add(grid);
     }
     
+    private List<Shape> buildGameGrid() {
+        List<Shape> gridElements = new ArrayList<>();
+        for(int i = 0; i < NBCOLUMNS; ++i) {
+            grid.add(new GridElement(parent));
+        }
+        return gridElements;
+    }
+    /*
     public void initGrid() {
         // bottom line
         grid.add(new Rectangle(width.get(), 5));
@@ -46,13 +56,19 @@ public class GameGrid extends Pane{
         // Ajoute les rectangles sur la grille
         this.getChildren().addAll(grid);
     }
-    
+    */
     public List<Shape> getGrid() {
         return grid;
     }
     
-    private void setResizable() {
-        width.bind(parent.widthProperty().subtract(100));
-        height.bind(parent.heightProperty().subtract(100));
+    
+    public void notifySceneWidth(Double oldSceneWidth, Double newSceneWidth) {
+        for(GridElement gElement : grid) {
+            
+        }
+    }
+
+    public void notifySceneHeight(Double oldSceneHeight, Double newSceneHeight) {
+        
     }
 }
