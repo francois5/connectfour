@@ -23,7 +23,7 @@ public class GameGrid extends Pane{
     
     private DoubleProperty width;
     private DoubleProperty height;
-    private List<Shape> grid;
+    private List<GridElement> grid;
     private Pane parent;
     
     public GameGrid(double width, double height, Pane parent) {
@@ -31,34 +31,25 @@ public class GameGrid extends Pane{
         this.width = new SimpleDoubleProperty(width);
         this.height = new SimpleDoubleProperty(height);
         this.grid = buildGameGrid();
-        this.getChildren().add(grid);
+        for(int i = 0; i < grid.size(); ++i) {
+            this.getChildren().add(grid.get(i).getGridElementShape());
+        }
     }
     
-    private List<Shape> buildGameGrid() {
-        List<Shape> gridElements = new ArrayList<>();
+    private List<GridElement> buildGameGrid() {
+        List<GridElement> gridElements = new ArrayList<>();
         for(int i = 0; i < NBCOLUMNS; ++i) {
             grid.add(new GridElement(parent));
         }
         return gridElements;
     }
-    /*
-    public void initGrid() {
-        // bottom line
-        grid.add(new Rectangle(width.get(), 5));
-        grid.get(grid.size() - 1).setTranslateY(height.get() + 165);
-        
-        // collumns
-        for (int i = 0; i < 8; ++i) {
-            grid.add(new Rectangle(5, height.get()));
-            grid.get(grid.size() - 1).setTranslateX(((width.get() / 7 ) * i)-(i-1));
-            grid.get(grid.size() - 1).setTranslateY((height.get()) / 3.6);
-        }
-        // Ajoute les rectangles sur la grille
-        this.getChildren().addAll(grid);
-    }
-    */
+    
     public List<Shape> getGrid() {
-        return grid;
+        List<Shape> list = new ArrayList<>();
+        for(GridElement gE : grid) {
+            list.add(gE.getGridElementShape());
+        }
+        return list;
     }
     
     

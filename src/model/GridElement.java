@@ -24,6 +24,10 @@ public class GridElement {
         gridElementShape.widthProperty().bind(parent.widthProperty().divide(30));
         gridElementShape.heightProperty().bind(parent.heightProperty().subtract(100));
     }
+    
+    public Shape getGridElementShape() {
+        return gridElementShape;
+    }
 
     
 }
