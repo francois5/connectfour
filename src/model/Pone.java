@@ -21,24 +21,34 @@ public class Pone {
     
     private Double xPercentage;
     private Double yPercentage;
+    private Double homeXPercentage;
+    private Double homeYPercentage;
     private boolean physicsEnable = false;
     private int speed;
     private int time;
     private int g = 9;
     
-    public Pone(List<Shape> grid, Pane parent) {
+    public Pone(List<Shape> grid,  Pane parent, Double homeXPercentage , Double homeYPercentage) {
         this.parent = parent;
         this.grid = grid;
         poneShape = new Ellipse();
         xPercentage = 0d;
         yPercentage = 0d;
+        this.homeXPercentage = homeXPercentage;
+        this.homeYPercentage = homeYPercentage;
         
         poneShape.radiusXProperty().bind(parent.widthProperty().divide(24));
         poneShape.radiusYProperty().bind(parent.heightProperty().divide(24));
         
         setDragListeners(poneShape);
-        
-        enablePhysics();
+    }
+    
+    public void init(Double width, Double height) {
+        this.poneShape.setTranslateX(width*homeXPercentage);
+        this.poneShape.setTranslateY(height*homeYPercentage);
+        this.xPercentage = poneShape.getTranslateX()/width;
+        this.yPercentage = poneShape.getTranslateY()/height;
+        this.poneShape.setFill(Color.BLACK);
     }
     
     public Shape getPoneShape() {
@@ -55,7 +65,9 @@ public class Pone {
             e.setCursor(Cursor.NONE);
         });
         e.setOnMouseReleased((MouseEvent mouseEvent) -> {
-            enablePhysics();
+            if(validMove()) enablePhysics();
+            else            goHome();
+            
             e.setCursor(Cursor.HAND);
         });
         e.setOnMouseDragged((MouseEvent mouseEvent) -> {
@@ -125,6 +137,18 @@ public class Pone {
 
     private void playCollisionSound() {
         ((GamePane)parent).getInstru().note_on(time);
+    }
+    
+    private void goHome() {
+        this.poneShape.setTranslateX(parent.getWidth()*homeXPercentage);
+        this.poneShape.setTranslateY(parent.getHeight()*homeYPercentage);
+        this.recalculatePercentages();
+        this.poneShape.setFill(Color.BLACK);
+    }
+
+    private boolean validMove() {
+        // to do
+        return false;
     }
     
     class Delta {

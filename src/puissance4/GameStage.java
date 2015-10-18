@@ -32,7 +32,7 @@ public class GameStage extends Stage {
         MyGameLoop loop = new MyGameLoop(gamePane);
         loop.start();
         
-        gamePane.init();
+        gamePane.init(scene.getWidth(), scene.getHeight());
         
         this.setTitle("Puissance 4 - Game");
         this.setScene(scene);

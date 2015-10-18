@@ -16,51 +16,36 @@ import model.PoneStock;
  */
 public class GamePane extends Pane {
     private GameGrid gameGrid = new GameGrid(600,600, this);
-    private PoneStock poneStock = new PoneStock(gameGrid, this);
+    private PoneStock rightPoneStock = new PoneStock(gameGrid, this, false);
+    private PoneStock leftPoneStock = new PoneStock(gameGrid, this, true);
     private final Instru instru = new Instru();
     
     public GamePane() {
         super();
     }
 
-    public void init() {
+    public void init(Double width, Double height) {
         // Ajoute la grille sur le gamePane
         this.getChildren().add(gameGrid);
-        
-        // pones
-        for (Pone p : poneStock.getStock())
-            this.getChildren().add(p.getPoneShape());
-        
-        this.widthProperty().addListener((ObservableValue<? extends Number> observableValue,
-                Number oldSceneWidth, Number newSceneWidth) -> {
-                    for (Pone p : poneStock.getStock()) {
-                        p.notifySceneWidth((Double) oldSceneWidth, (Double) newSceneWidth);
-                    }
-                });
-
-        this.heightProperty().addListener((ObservableValue<? extends Number> observableValue,
-                Number oldSceneHeight, Number newSceneHeight) -> {
-                    for (Pone p : poneStock.getStock()) {
-                        p.notifySceneHeight((Double) oldSceneHeight, (Double) newSceneHeight);
-                    }
-                });
-        
+        this.getChildren().add(rightPoneStock);
+        rightPoneStock.init(width, height);
+        this.getChildren().add(leftPoneStock);
+        leftPoneStock.init(width, height);
     }
     
     @Override
     protected void layoutChildren() { }
 
     public void update() {
-        for(Pone p : poneStock.getStock()) {
-            p.update();
-        }
+        rightPoneStock.update();
+        leftPoneStock.update();
     }
 
     public List<Shape> getPones() {
-        List<Shape> shapes = new ArrayList<>();
-        for(Pone p : poneStock.getStock())
-            shapes.add(p.getPoneShape());
-        return shapes;
+        List<Shape> l = new ArrayList<Shape>();
+        l.addAll(rightPoneStock.getPoneShapes());
+        l.addAll(leftPoneStock.getPoneShapes());
+        return l;
     }
 
     public Instru getInstru() {
