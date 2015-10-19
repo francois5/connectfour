@@ -26,6 +26,7 @@ public class GamePane extends Pane {
 
     public void init(Double width, Double height) {
         // Ajoute la grille sur le gamePane
+        gameGrid.init(width, height);
         this.getChildren().add(gameGrid);
         this.getChildren().add(rightPoneStock);
         rightPoneStock.init(width, height);

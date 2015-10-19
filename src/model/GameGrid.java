@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -18,30 +19,46 @@ import javafx.scene.shape.Shape;
  *
  * @author seb
  */
-public class GameGrid extends Pane{
+public class GameGrid extends Pane {
     public static int NBCOLUMNS = 8;
     
     private DoubleProperty width;
     private DoubleProperty height;
-    private List<GridElement> grid;
+    private List<GridElement> grid = new ArrayList<GridElement>();
     private Pane parent;
     
     public GameGrid(double width, double height, Pane parent) {
         this.parent = parent;
         this.width = new SimpleDoubleProperty(width);
         this.height = new SimpleDoubleProperty(height);
-        this.grid = buildGameGrid();
-        for(int i = 0; i < grid.size(); ++i) {
-            this.getChildren().add(grid.get(i).getGridElementShape());
-        }
     }
     
-    private List<GridElement> buildGameGrid() {
-        List<GridElement> gridElements = new ArrayList<>();
+    private void setSizeListeners() {
+        parent.widthProperty().addListener((ObservableValue<? extends Number> observableValue,
+                Number oldSceneWidth, Number newSceneWidth) -> {
+                    notifySceneWidth((double)newSceneWidth);
+                });
+
+        parent.heightProperty().addListener((ObservableValue<? extends Number> observableValue,
+                Number oldSceneHeight, Number newSceneHeight) -> {
+                    notifySceneHeight((double)newSceneHeight);
+                });
+    }
+    
+    public void init(Double width, Double height) {
+        this.grid = buildGameGrid(width, height);
+        /*for(int i = 0; i < grid.size(); ++i) {
+            this.getChildren().add(grid.get(i).getGridElementShape());
+        }*/
+        setSizeListeners();
+    }
+    
+    private List<GridElement> buildGameGrid(Double width, Double height) {
         for(int i = 0; i < NBCOLUMNS; ++i) {
-            grid.add(new GridElement(parent));
+            grid.add(new GridElement(parent, width, height, true, i));
         }
-        return gridElements;
+        grid.add(new GridElement(parent, width, height, false, 0));
+        return grid;
     }
     
     public List<Shape> getGrid() {
@@ -53,13 +70,15 @@ public class GameGrid extends Pane{
     }
     
     
-    public void notifySceneWidth(Double oldSceneWidth, Double newSceneWidth) {
+    public void notifySceneWidth(Double newSceneWidth) {
         for(GridElement gElement : grid) {
-            
+            gElement.notifySceneWidth(newSceneWidth);
         }
     }
 
-    public void notifySceneHeight(Double oldSceneHeight, Double newSceneHeight) {
-        
+    public void notifySceneHeight(Double newSceneHeight) {
+        for(GridElement gElement : grid) {
+            gElement.notifySceneHeight(newSceneHeight);
+        }
     }
 }
