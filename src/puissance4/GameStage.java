@@ -6,6 +6,7 @@
 package puissance4;
 
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Instru;
@@ -28,6 +29,10 @@ public class GameStage extends Stage {
         // todo: put pone stocks on the sides
         
         Scene scene = new Scene(root, 800, 800);
+        // Note - CSS file has to be in src dir
+        String css = GameStage.class.getResource("/darktheme.css").toExternalForm();
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(css);
         
         MyGameLoop loop = new MyGameLoop(gamePane);
         loop.start();
@@ -35,6 +40,8 @@ public class GameStage extends Stage {
         gamePane.init(scene.getWidth(), scene.getHeight());
         
         this.setTitle("Puissance 4 - Game");
+        // Change l'icône
+        this.getIcons().add(new Image("icon.png"));
         this.setScene(scene);
         this.show();
     }

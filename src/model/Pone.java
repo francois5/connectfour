@@ -32,6 +32,8 @@ public class Pone {
         this.parent = parent;
         this.grid = grid;
         poneShape = new Ellipse();
+        // Création d'une classe css pour poneShape
+        poneShape.getStyleClass().add("pone-shape");
         xPercentage = 0d;
         yPercentage = 0d;
         this.homeXPercentage = homeXPercentage;
