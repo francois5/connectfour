@@ -1,6 +1,7 @@
 package vue;
 
 import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import model.Instru;
@@ -23,9 +24,11 @@ public class GameMenu extends Pane {
     private final CheckMenuItem on;
     private Instru instru;
     
-    public GameMenu(Instru instru) {
+    public GameMenu(Instru instru, Scene scene) {
         // barre de menu
         menuBar = new MenuBar();
+        
+        menuBar.prefWidthProperty().bind(scene.widthProperty());
         
         // menus
         gameMenu = new Menu("Game");

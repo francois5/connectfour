@@ -21,14 +21,16 @@ public class GameStage extends Stage {
     private final BorderPane root = new BorderPane();
     private final GamePane gamePane = new GamePane();
     private final Instru instru = new Instru();
-    private final GameMenu gameMenu = new GameMenu(instru);
+    private final GameMenu gameMenu;
+    private final Scene scene;
     
     public GameStage() {
+        scene = new Scene(root, 800, 800);
+        gameMenu = new GameMenu(instru, scene);
+        
         root.setCenter(gamePane);
         root.setTop(gameMenu);
-        // todo: put pone stocks on the sides
         
-        Scene scene = new Scene(root, 800, 800);
         // Note - CSS file has to be in src dir
         String css = GameStage.class.getResource("/darktheme.css").toExternalForm();
         scene.getStylesheets().clear();
