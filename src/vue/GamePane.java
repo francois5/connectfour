@@ -30,8 +30,10 @@ public class GamePane extends Pane {
         this.getChildren().add(gameGrid);
         this.getChildren().add(rightPoneStock);
         rightPoneStock.init(width, height);
+        
         this.getChildren().add(leftPoneStock);
         leftPoneStock.init(width, height);
+        
     }
     
     @Override
