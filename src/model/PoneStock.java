@@ -14,6 +14,7 @@ import vue.GamePane;
  * @author localwsp
  */
 public class PoneStock extends Pane {
+    public static boolean leftSideFill = false;
     public static int NBPONE = 21;
     private ObservableList<Pone> stock;
     private GameGrid gameGrid;
@@ -65,7 +66,7 @@ public class PoneStock extends Pane {
             Pone p = new Pone(gameGrid.getGrid(), gamePane, 
                     (Double)((poneStockTranslationX+poneRadiusX)/width) , 
                     (Double)(((poneRadiusX)+((poneRadiusX*2)*i))/height) );
-            p.getPoneShape().getStyleClass().add("left-stock");
+            colorPone(p);
             pones.add(p);
         }
         // right pone collumn
@@ -73,10 +74,19 @@ public class PoneStock extends Pane {
             Pone p = new Pone(gameGrid.getGrid(), gamePane, 
                     (Double)((poneStockTranslationX+(poneRadiusX*3))/width) , 
                     (Double)((poneRadiusX+((poneRadiusX*2)*i))/height) );
-            p.getPoneShape().getStyleClass().add("right-stock");
+            colorPone(p);
             pones.add(p);
         }
+        leftSideFill = true;
         return pones;
+    }
+    
+    public void colorPone(Pone p) {
+        if(leftSideFill) {
+            p.getPoneShape().getStyleClass().add("right-stock");
+        } else {
+            p.getPoneShape().getStyleClass().add("left-stock");
+        }
     }
     
     // Retourne la forme du premier pion
