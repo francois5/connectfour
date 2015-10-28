@@ -22,15 +22,11 @@ import javafx.scene.shape.Shape;
 public class GameGrid extends Pane {
     public static int NBCOLUMNS = 8;
     
-    private DoubleProperty width;
-    private DoubleProperty height;
     private List<GridElement> grid = new ArrayList<GridElement>();
     private Pane parent;
     
     public GameGrid(double width, double height, Pane parent) {
         this.parent = parent;
-        this.width = new SimpleDoubleProperty(width);
-        this.height = new SimpleDoubleProperty(height);
     }
     
     private void setSizeListeners() {
