@@ -5,9 +5,14 @@
  */
 package vue;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
 /**
  *
@@ -17,11 +22,16 @@ public class FooterPane extends Pane {
     private Scene scene;
     private Rectangle leftLeg;
     private Rectangle rightLeg;
+    private Rotate leftRotate;
+    private Rotate rightRotate;
     
     public FooterPane(Scene scene) {
         this.scene = scene;
         buildLegs();
         setResizable();
+        legsTransform();
+        animateLeftLeg();
+        animateRightLeg();
     }
     
     private void buildLegs() {
@@ -32,6 +42,46 @@ public class FooterPane extends Pane {
         rightLeg.getStyleClass().add("leg");
         
         this.getChildren().addAll(leftLeg, rightLeg);
+    }
+    
+    private void legsTransform() {
+        leftRotate = new Rotate();
+        rightRotate = new Rotate();
+        
+        leftLeg.getTransforms().add(leftRotate);
+        rightLeg.getTransforms().add(rightRotate);
+    }
+    
+    private void animateLeftLeg() {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().addAll(
+            // target value pour 0 ms
+            new KeyFrame(
+                Duration.ZERO, new KeyValue(leftRotate.angleProperty(), 45)
+            ),
+            // target value pour 1000 ms    
+            new KeyFrame(
+                new Duration(1000), new KeyValue(leftRotate.angleProperty(), 0)
+            )
+        );
+        
+        timeline.play();
+    }
+    
+    private void animateRightLeg() {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().addAll(
+            // target value pour 0 ms
+            new KeyFrame(
+                Duration.ZERO, new KeyValue(rightRotate.angleProperty(), 15)
+            ),
+            // target value pour 1000 ms
+            new KeyFrame(
+                new Duration(1000), new KeyValue(rightRotate.angleProperty(), 0)
+            )
+        );
+        
+        timeline.play();
     }
     
     private void setResizable() {
