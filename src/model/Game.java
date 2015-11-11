@@ -25,13 +25,15 @@ public class Game {
     private void initGame(int gridWidth, int gridHeight) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
+        grid = new int[gridWidth][gridHeight];
         
         for(int col = 0; col < gridHeight; ++col) {
             for(int row = 0; row < gridWidth; ++row) {
                 grid[row][col] = VIDE;
                 // test
-                System.out.println("X");
+                System.out.print("X");
             }
+            System.out.println("");
         }
     }
 }

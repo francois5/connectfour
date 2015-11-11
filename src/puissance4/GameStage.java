@@ -26,11 +26,9 @@ public class GameStage extends Stage {
     private final GameMenu gameMenu;
     private final Scene scene  = new Scene(root, 800, 800);
     private final FooterPane footerPane = new FooterPane(scene);
-    private Game game;
     
-    public GameStage(Game game) {
+    public GameStage() {
         gameMenu = new GameMenu(instru, scene);
-        this.game = new Game();
         
         root.setTop(gameMenu);
         root.setCenter(gamePane);
