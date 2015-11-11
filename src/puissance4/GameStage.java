@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.Game;
 import model.Instru;
 import vue.FooterPane;
 import vue.GameMenu;
@@ -23,11 +24,13 @@ public class GameStage extends Stage {
     private final GamePane gamePane = new GamePane();
     private final Instru instru = new Instru();
     private final GameMenu gameMenu;
-    private final Scene scene  = new Scene(root, 800, 800);;
+    private final Scene scene  = new Scene(root, 800, 800);
     private final FooterPane footerPane = new FooterPane(scene);
+    private Game game;
     
-    public GameStage() {
+    public GameStage(Game game) {
         gameMenu = new GameMenu(instru, scene);
+        this.game = new Game();
         
         root.setTop(gameMenu);
         root.setCenter(gamePane);

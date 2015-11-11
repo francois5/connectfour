@@ -45,8 +45,11 @@ public class FooterPane extends Pane {
     }
     
     private void legsTransform() {
-        leftRotate = new Rotate();
-        rightRotate = new Rotate();
+        // Pivot : startAngle à 0 degrés, position sur coin sup gauche de leftLeg
+        leftRotate = new Rotate(0, leftLeg.getX(), leftLeg.getY());
+        // Pivot: startAngle à 0 degrés, position sur coin sup droit de rightLeg
+        rightRotate = new Rotate(0, rightLeg.getX() + rightLeg.getWidth(), 
+                rightLeg.getY());
         
         leftLeg.getTransforms().add(leftRotate);
         rightLeg.getTransforms().add(rightRotate);
@@ -57,7 +60,7 @@ public class FooterPane extends Pane {
         timeline.getKeyFrames().addAll(
             // target value pour 0 ms
             new KeyFrame(
-                Duration.ZERO, new KeyValue(leftRotate.angleProperty(), 45)
+                Duration.ZERO, new KeyValue(leftRotate.angleProperty(), 180)
             ),
             // target value pour 1000 ms    
             new KeyFrame(
@@ -73,7 +76,7 @@ public class FooterPane extends Pane {
         timeline.getKeyFrames().addAll(
             // target value pour 0 ms
             new KeyFrame(
-                Duration.ZERO, new KeyValue(rightRotate.angleProperty(), 15)
+                Duration.ZERO, new KeyValue(rightRotate.angleProperty(), 180)
             ),
             // target value pour 1000 ms
             new KeyFrame(
