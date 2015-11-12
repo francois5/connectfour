@@ -22,7 +22,7 @@ public class GameStage extends Stage {
     private final GamePane gamePane = new GamePane();
     private final Instru instru = new Instru();
     private final GameMenu gameMenu;
-    private final Scene scene;
+    private static Scene scene;
     
     public GameStage() {
         scene = new Scene(root, 800, 800);
@@ -46,5 +46,9 @@ public class GameStage extends Stage {
         this.getIcons().add(new Image("icon.png"));
         this.setScene(scene);
         this.show();
+    }
+    
+    public static Scene myGetScene() {
+        return scene;
     }
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
@@ -50,7 +49,8 @@ public class Pone {
         this.poneShape.setTranslateY(height*homeYPercentage);
         this.xPercentage = poneShape.getTranslateX()/width;
         this.yPercentage = poneShape.getTranslateY()/height;
-        this.poneShape.setFill(Color.BLACK);
+        //this.poneShape.setFill(Color.BLACK);
+        //this.poneShape.toBack();
     }
     
     public Shape getPoneShape() {
@@ -78,7 +78,6 @@ public class Pone {
             
             recalculatePercentages();
             
-            this.poneShape.setFill(Color.BLACK);
             checkBounds(e, grid);
             checkBounds(e, ((GamePane)parent).getPones());
         });
@@ -90,7 +89,6 @@ public class Pone {
             if (s != e) {
                 Shape path = Path.intersect(e, s);
                 if (!path.getBoundsInParent().isEmpty()) {
-                    e.setFill(Color.RED);
                     disablePhysics();
                 }
             }
@@ -116,7 +114,7 @@ public class Pone {
             speed = gravitationalAcceleration(speed);
             this.poneShape.setTranslateY(this.poneShape.getTranslateY() + (speed/1000));
             recalculatePercentages();
-            this.poneShape.setFill(Color.BLACK);
+            //this.poneShape.setFill(Color.BLACK);
             checkBounds(this.poneShape, this.grid);
             checkBounds(this.poneShape, ((GamePane)parent).getPones());
             if(!physicsEnable)
@@ -145,12 +143,12 @@ public class Pone {
         this.poneShape.setTranslateX(parent.getWidth()*homeXPercentage);
         this.poneShape.setTranslateY(parent.getHeight()*homeYPercentage);
         this.recalculatePercentages();
-        this.poneShape.setFill(Color.BLACK);
+        //this.poneShape.setFill(Color.BLACK);
     }
 
     private boolean validMove() {
         // to do
-        return false;
+        return true;
     }
     
     class Delta {

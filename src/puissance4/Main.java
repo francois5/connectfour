@@ -2,12 +2,7 @@ package puissance4;
 
 import java.io.IOException;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.Instru;
-import vue.GameMenu;
-import vue.GamePane;
 
 
 /**
