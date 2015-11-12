@@ -31,8 +31,6 @@ public class GameGrid extends Pane {
     
     public GameGrid(double width, double height, Pane parent) {
         this.parent = parent;
-        this.width = new SimpleDoubleProperty(width);
-        this.height = new SimpleDoubleProperty(height);
     }
     
     public void initFrontImage() {

@@ -9,7 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.Game;
 import model.Instru;
+import vue.FooterPane;
 import vue.GameMenu;
 import vue.GamePane;
 
@@ -22,14 +24,15 @@ public class GameStage extends Stage {
     private final GamePane gamePane = new GamePane();
     private final Instru instru = new Instru();
     private final GameMenu gameMenu;
-    private static Scene scene;
+    private final Scene scene = new Scene(root, 800, 800);;
+    private final FooterPane footerPane = new FooterPane(scene);
     
     public GameStage() {
-        scene = new Scene(root, 800, 800);
         gameMenu = new GameMenu(instru, scene);
         
-        root.setCenter(gamePane);
         root.setTop(gameMenu);
+        root.setCenter(gamePane);
+        root.setBottom(footerPane);
         
         // Note - CSS file has to be in src dir
         String css = GameStage.class.getResource("/darktheme.css").toExternalForm();
@@ -46,9 +49,5 @@ public class GameStage extends Stage {
         this.getIcons().add(new Image("icon.png"));
         this.setScene(scene);
         this.show();
-    }
-    
-    public static Scene myGetScene() {
-        return scene;
     }
 }
