@@ -8,8 +8,8 @@ package puissance4;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Game;
 import model.Instru;
 import vue.FooterPane;
 import vue.GameMenu;
@@ -22,17 +22,18 @@ import vue.GamePane;
 public class GameStage extends Stage {
     private final BorderPane root = new BorderPane();
     private final GamePane gamePane = new GamePane();
-    private final Instru instru = new Instru();
     private final GameMenu gameMenu;
     private final Scene scene = new Scene(root, 800, 800);;
-    private final FooterPane footerPane = new FooterPane(scene);
+    
     
     public GameStage() {
-        gameMenu = new GameMenu(instru, scene);
+        this.setTitle("Puissance 4 - Game");
+        
+        gameMenu = new GameMenu(gamePane, scene, this);
         
         root.setTop(gameMenu);
-        root.setCenter(gamePane);
-        root.setBottom(footerPane);
+        //root.setCenter(gamePane);
+        //root.setBottom(footerPane);
         
         // Note - CSS file has to be in src dir
         String css = GameStage.class.getResource("/darktheme.css").toExternalForm();
@@ -44,10 +45,18 @@ public class GameStage extends Stage {
         
         gamePane.init(scene.getWidth(), scene.getHeight());
         
-        this.setTitle("Puissance 4 - Game");
         // Change l'icône
         this.getIcons().add(new Image("icon.png"));
+        
         this.setScene(scene);
         this.show();
+    }
+    
+    public void setCenterRoot(Pane pane) {
+        this.root.setCenter(pane);
+    }
+    
+    public void setBottomRoot(Pane pane) {
+        this.root.setBottom(pane);
     }
 }
