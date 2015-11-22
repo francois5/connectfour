@@ -63,7 +63,7 @@ public class PoneStock extends Pane {
         ObservableList<Pone> pones = FXCollections.observableArrayList();
         // left pone collumn
         for(int i = 0; i < NBPONE/2; ++i) {
-            Pone p = new Pone(gameGrid.getGrid(), gamePane, 
+            Pone p = new Pone(gameGrid, gamePane, 
                     (Double)((poneStockTranslationX+poneRadiusX)/width) , 
                     (Double)(((poneRadiusX)+((poneRadiusX*2)*i))/height) );
             colorPone(p);
@@ -71,7 +71,7 @@ public class PoneStock extends Pane {
         }
         // right pone collumn
         for(int i = 0; i <= NBPONE/2; ++i) {
-            Pone p = new Pone(gameGrid.getGrid(), gamePane, 
+            Pone p = new Pone(gameGrid, gamePane, 
                     (Double)((poneStockTranslationX+(poneRadiusX*3))/width) , 
                     (Double)((poneRadiusX+((poneRadiusX*2)*i))/height) );
             colorPone(p);

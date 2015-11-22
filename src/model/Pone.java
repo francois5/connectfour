@@ -15,7 +15,7 @@ import vue.GamePane;
  */
 public class Pone {
     private Ellipse poneShape;
-    private List<Shape> grid;
+    private GameGrid grid;
     private Pane parent;
     
     private Double xPercentage;
@@ -26,8 +26,10 @@ public class Pone {
     private int speed;
     private int time;
     private int g = 9;
+    private boolean compensateCollisionEffect = false;
     
-    public Pone(List<Shape> grid,  Pane parent, Double homeXPercentage , Double homeYPercentage) {
+    public Pone(GameGrid grid,  Pane parent, Double homeXPercentage , 
+            Double homeYPercentage) {
         this.parent = parent;
         this.grid = grid;
         poneShape = new Ellipse();
@@ -78,23 +80,29 @@ public class Pone {
             
             recalculatePercentages();
             
-            checkBounds(e, grid);
-            checkBounds(e, ((GamePane)parent).getPones());
+            checkBounds(e, grid.getGrid(), false);
+            checkBounds(e, ((GamePane)parent).getPones(), false);
         });
     }
     
     // check collision
-    private void checkBounds(Shape e, List<Shape> shapes) {
+    private void checkBounds(Shape e, List<Shape> shapes, boolean enable) {
+        boolean disabled = false;
         for (Shape s : shapes) {
             if (s != e) {
                 Shape path = Path.intersect(e, s);
                 if (!path.getBoundsInParent().isEmpty()) {
                     disablePhysics();
+                    disabled = true;
                 }
             }
         }
+        if (!disabled && enable) {
+            System.out.println("enable");
+            enablePhysics();
+        }
     }
-
+    
     public void notifySceneWidth(Double oldSceneWidth, Double newSceneWidth) {
         poneShape.setTranslateX(newSceneWidth*xPercentage);
     }
@@ -109,17 +117,33 @@ public class Pone {
     }
 
     public void update() {
-        if(physicsEnable) {
+        if(compensateCollisionEffect) {
+            this.poneShape.setTranslateY(this.poneShape.getTranslateY() - 1);
+            checkBounds(this.poneShape, this.grid.getGrid(), true);
+            checkBounds(this.poneShape, ((GamePane)parent).getPones(), true);
+            if(physicsEnable) {
+                //this.poneShape.setTranslateY(this.poneShape.getTranslateY() + 1);
+                compensateCollisionEffect = false;
+                physicsEnable = false;
+            }
+        }
+        else if(physicsEnable) {
             ++time;
             speed = gravitationalAcceleration(speed);
             this.poneShape.setTranslateY(this.poneShape.getTranslateY() + (speed/1000));
             recalculatePercentages();
             //this.poneShape.setFill(Color.BLACK);
-            checkBounds(this.poneShape, this.grid);
-            checkBounds(this.poneShape, ((GamePane)parent).getPones());
-            if(!physicsEnable)
+            checkBounds(this.poneShape, this.grid.getGrid(), false);
+            checkBounds(this.poneShape, ((GamePane)parent).getPones(), false);
+            if(!physicsEnable) {
                 playCollisionSound();
+                compensateCollisionEffect = true;
+            }
         }
+    }
+    
+    private void compensateCollisionEffect() {
+        
     }
 
     private void enablePhysics() {

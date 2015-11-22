@@ -34,15 +34,19 @@ public class GameGrid extends Pane {
     }
     
     public void initFrontImage() {
+        image.widthProperty().divide(6).multiply(4);
+        image.heightProperty().multiply(0.725f);
         imageView.setImage(image);
-        getChildren().add(imageView);
         reposFrontImage(800d,800d);
+        getChildren().add(imageView);
     }
     
     private void reposFrontImage(Double width, Double height) {
-        imageView.setTranslateX(0);
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
+        imageView.setTranslateX(width/6);
+        imageView.setTranslateY(height/3.6);
+        
+        imageView.setFitHeight(height*0.725f);
+        imageView.setFitWidth((width/6)*4);
     }
     
     private void setSizeListeners() {
@@ -91,5 +95,9 @@ public class GameGrid extends Pane {
         for(GridElement gElement : grid) {
             gElement.notifySceneHeight(newSceneHeight);
         }
+    }
+    
+    public ImageView getImage() {
+        return this.imageView;
     }
 }

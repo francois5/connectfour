@@ -32,16 +32,19 @@ public class GamePane extends Pane {
         gameGrid.init(width, height);
         //this.setCenter(gameGrid);
         this.getChildren().add(gameGrid);
+        //this.setCenter(gameGrid);
         //this.setRight(rightPoneStock);
         //leftPoneStock.widthProperty().add(100);
         //this.setLeft(leftPoneStock);
-        
+        //this.setRight(rightPoneStock);
         this.getChildren().add(rightPoneStock);
         rightPoneStock.init(width, height);
-        
+        //this.setLeft(leftPoneStock);
         this.getChildren().add(leftPoneStock);
         leftPoneStock.init(width, height);
+
         gameGrid.initFrontImage();
+        //gameGrid.toFront();
     }
     
     @Override
