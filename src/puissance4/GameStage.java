@@ -10,8 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Instru;
-import vue.FooterPane;
 import vue.GameMenu;
 import vue.GamePane;
 

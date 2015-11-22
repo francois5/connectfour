@@ -57,29 +57,32 @@ public class Pone {
         return poneShape;
     }
     
-    public void setDragListeners(final Shape e) {
+    public void setDragListeners(final Shape curShape) {
         final Delta dragDelta = new Delta();
 
-        e.setOnMousePressed((MouseEvent mouseEvent) -> {
+        curShape.setOnMousePressed((MouseEvent mouseEvent) -> {
             disablePhysics();
-            dragDelta.x = e.getTranslateX() - mouseEvent.getSceneX();
-            dragDelta.y = e.getTranslateY() - mouseEvent.getSceneY();
-            e.setCursor(Cursor.NONE);
+            // Pourquoi ça ne fonctionne pas 
+            // si on ne prend pas e.getTranslateX/Y ?
+            dragDelta.x = curShape.getTranslateX() - mouseEvent.getSceneX();
+            dragDelta.y = curShape.getTranslateY() - mouseEvent.getSceneY();
+            curShape.setCursor(Cursor.NONE);
         });
-        e.setOnMouseReleased((MouseEvent mouseEvent) -> {
+        curShape.setOnMouseReleased((MouseEvent mouseEvent) -> {
             if(validMove()) enablePhysics();
             else            goHome();
             
-            e.setCursor(Cursor.HAND);
+            curShape.setCursor(Cursor.HAND);
+            checkBounds(curShape, grid);
+            checkBounds(curShape, ((GamePane)parent).getPones());
         });
-        e.setOnMouseDragged((MouseEvent mouseEvent) -> {
-            e.setTranslateX(mouseEvent.getSceneX() + dragDelta.x);
-            e.setTranslateY(mouseEvent.getSceneY() + dragDelta.y);
+        curShape.setOnMouseDragged((MouseEvent mouseEvent) -> {
+            curShape.setTranslateX(mouseEvent.getSceneX() + dragDelta.x);
+            curShape.setTranslateY(mouseEvent.getSceneY() + dragDelta.y);
             
             recalculatePercentages();
             
-            checkBounds(e, grid);
-            checkBounds(e, ((GamePane)parent).getPones());
+            
         });
     }
     
@@ -90,6 +93,11 @@ public class Pone {
                 Shape path = Path.intersect(e, s);
                 if (!path.getBoundsInParent().isEmpty()) {
                     disablePhysics();
+                    // Pour replacer le Pone juste au-dessus de la Shape
+                    // en collision
+                    double otherShapePosY = s.getBoundsInLocal().getMinY();
+                    Ellipse ellipse = (Ellipse) e;
+                    ellipse.setTranslateY(otherShapePosY - ellipse.getRadiusX());
                 }
             }
         }
