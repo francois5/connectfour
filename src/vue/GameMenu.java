@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import model.Instru;
+import puissance4.GameStage;
 
 /**
  *
@@ -22,9 +23,19 @@ public class GameMenu extends Pane {
     private final RadioMenuItem normal;
     private final RadioMenuItem difficult;
     private final CheckMenuItem on;
-    private Instru instru;
     
-    public GameMenu(Instru instru, Scene scene) {
+    private Scene scene;
+    private GamePane gamePane;
+    private GameStage gameStage;
+    private final FooterPane footerPane;
+    
+    public GameMenu(GamePane gamePane, Scene scene, 
+            GameStage gameStage) {
+        this.scene = scene;
+        this.gamePane = gamePane;
+        this.gameStage = gameStage;
+        footerPane = new FooterPane(scene);
+        
         // barre de menu
         menuBar = new MenuBar();
         
@@ -64,7 +75,6 @@ public class GameMenu extends Pane {
                 new SeparatorMenuItem(), exit);
         soundMenu.getItems().addAll(on);
         
-        this.instru = instru;
         addKeyListeners();
         
     }
@@ -74,8 +84,10 @@ public class GameMenu extends Pane {
             Platform.exit();
         });
         
-        menuBar.setOnMousePressed(e -> {
-            instru.note_on(62);
+        newGame.setOnAction(e -> {
+            this.gameStage.setCenterRoot(this.gamePane);
+            this.gameStage.setBottomRoot(this.footerPane);
+            this.footerPane.anime();
         });
     }
 }

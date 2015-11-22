@@ -41,7 +41,7 @@ public class Pone {
         this.homeYPercentage = homeYPercentage;
         
         poneShape.radiusXProperty().bind(parent.widthProperty().divide(24));
-        poneShape.radiusYProperty().bind(parent.heightProperty().divide(24));
+        poneShape.radiusYProperty().bind(parent.heightProperty().divide(17));
         
         setDragListeners(poneShape);
     }

@@ -30,8 +30,8 @@ public class FooterPane extends Pane {
         buildLegs();
         setResizable();
         legsTransform();
-        animateLeftLeg();
-        animateRightLeg();
+        //animateLeftLeg();
+        //animateRightLeg();
     }
     
     private void buildLegs() {
@@ -95,5 +95,10 @@ public class FooterPane extends Pane {
         rightLeg.widthProperty().bind(scene.widthProperty().divide(12));
         rightLeg.heightProperty().bind(scene.heightProperty().divide(5));
         rightLeg.xProperty().bind(scene.widthProperty().divide(1.335));
+    }
+    
+    public void anime() {
+        animateLeftLeg();
+        animateRightLeg();
     }
 }

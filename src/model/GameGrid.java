@@ -39,6 +39,8 @@ public class GameGrid extends Pane {
         imageView.setImage(image);
         reposFrontImage(800d,800d);
         getChildren().add(imageView);
+        this.toFront();
+        this.pickOnBoundsProperty().set(false);
     }
     
     private void reposFrontImage(Double width, Double height) {

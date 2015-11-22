@@ -3,7 +3,8 @@ package puissance4;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Game;
+import model.Part;
+import model.Player;
 
 
 /**
@@ -14,8 +15,7 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) throws IOException {
-        new Game();
-        new GameStage();
+        Part p = new Part(new Player("sebastien"), new Player("françois"));
     }
     
     
