@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
@@ -51,8 +52,6 @@ public class Pone {
         this.poneShape.setTranslateY(height*homeYPercentage);
         this.xPercentage = poneShape.getTranslateX()/width;
         this.yPercentage = poneShape.getTranslateY()/height;
-        //this.poneShape.setFill(Color.BLACK);
-        //this.poneShape.toBack();
     }
     
     public Shape getPoneShape() {
@@ -97,10 +96,8 @@ public class Pone {
                 }
             }
         }
-        if (!disabled && enable) {
-            System.out.println("enable");
+        if (!disabled && enable)
             enablePhysics();
-        }
     }
     
     public void notifySceneWidth(Double oldSceneWidth, Double newSceneWidth) {
@@ -117,22 +114,13 @@ public class Pone {
     }
 
     public void update() {
-        if(compensateCollisionEffect) {
-            this.poneShape.setTranslateY(this.poneShape.getTranslateY() - 1);
-            checkBounds(this.poneShape, this.grid.getGrid(), true);
-            checkBounds(this.poneShape, ((GamePane)parent).getPones(), true);
-            if(physicsEnable) {
-                //this.poneShape.setTranslateY(this.poneShape.getTranslateY() + 1);
-                compensateCollisionEffect = false;
-                physicsEnable = false;
-            }
-        }
+        if(compensateCollisionEffect)
+            compensateCollisionEffect();
         else if(physicsEnable) {
             ++time;
             speed = gravitationalAcceleration(speed);
             this.poneShape.setTranslateY(this.poneShape.getTranslateY() + (speed/1000));
             recalculatePercentages();
-            //this.poneShape.setFill(Color.BLACK);
             checkBounds(this.poneShape, this.grid.getGrid(), false);
             checkBounds(this.poneShape, ((GamePane)parent).getPones(), false);
             if(!physicsEnable) {
@@ -143,7 +131,14 @@ public class Pone {
     }
     
     private void compensateCollisionEffect() {
-        
+        this.poneShape.setTranslateY(this.poneShape.getTranslateY() - 1);
+        ArrayList<Shape> concatPoneGrid = new ArrayList<Shape>(this.grid.getGrid());
+        concatPoneGrid.addAll(((GamePane) parent).getPones());
+        checkBounds(this.poneShape, concatPoneGrid, true);
+        if (physicsEnable) {
+            compensateCollisionEffect = false;
+            physicsEnable = false;
+        }
     }
 
     private void enablePhysics() {
@@ -167,7 +162,6 @@ public class Pone {
         this.poneShape.setTranslateX(parent.getWidth()*homeXPercentage);
         this.poneShape.setTranslateY(parent.getHeight()*homeYPercentage);
         this.recalculatePercentages();
-        //this.poneShape.setFill(Color.BLACK);
     }
 
     private boolean validMove() {

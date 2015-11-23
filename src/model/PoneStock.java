@@ -14,7 +14,6 @@ import vue.GamePane;
  * @author localwsp
  */
 public class PoneStock extends Pane {
-    public static boolean leftSideFill = false;
     public static int NBPONE = 21;
     private ObservableList<Pone> stock;
     private GameGrid gameGrid;
@@ -47,7 +46,7 @@ public class PoneStock extends Pane {
         this.stock = fillPoneStock(width, height);
         
         for (Pone p : stock) {
-            this.getChildren().add(p.getPoneShape());
+            this.gamePane.getChildren().add(p.getPoneShape());
             p.init(width, height);
         }
         
@@ -77,12 +76,11 @@ public class PoneStock extends Pane {
             colorPone(p);
             pones.add(p);
         }
-        leftSideFill = true;
         return pones;
     }
     
     public void colorPone(Pone p) {
-        if(leftSideFill) {
+        if(leftSide) {
             p.getPoneShape().getStyleClass().add("right-stock");
         } else {
             p.getPoneShape().getStyleClass().add("left-stock");
