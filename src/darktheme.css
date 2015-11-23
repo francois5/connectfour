@@ -152,11 +152,11 @@
 }
 */
 .right-stock {
-    -fx-fill: red;
+    -fx-fill: linear-gradient(#ff1400, #be1d00);
 }
 
 .left-stock {
-    -fx-fill: gold;
+    -fx-fill: linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%);
 }
 
 .leg {

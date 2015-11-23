@@ -86,6 +86,8 @@ public class Pone {
     }
     
     // check collision
+    // enable à false avant une collision
+    // enable à true après une collision
     private void checkBounds(Shape e, List<Shape> shapes, boolean enable) {
         boolean disabled = false;
         for (Shape s : shapes) {
@@ -97,6 +99,11 @@ public class Pone {
                 }
             }
         }
+        // Si path.getBoundsInParent().isEmpty
+        // Il n'y a pas eu de collision
+        
+        // Si enable est à true, la collision a déja eu lieu
+        // Donc on réactive la physique
         if (!disabled && enable) {
             System.out.println("enable");
             enablePhysics();
@@ -119,7 +126,9 @@ public class Pone {
     public void update() {
         if(compensateCollisionEffect) {
             this.poneShape.setTranslateY(this.poneShape.getTranslateY() - 1);
+            // check les collisions entre poneShape et la grille
             checkBounds(this.poneShape, this.grid.getGrid(), true);
+            // check les collisions entre poneShape et les stock de Pones
             checkBounds(this.poneShape, ((GamePane)parent).getPones(), true);
             if(physicsEnable) {
                 //this.poneShape.setTranslateY(this.poneShape.getTranslateY() + 1);
@@ -133,17 +142,15 @@ public class Pone {
             this.poneShape.setTranslateY(this.poneShape.getTranslateY() + (speed/1000));
             recalculatePercentages();
             //this.poneShape.setFill(Color.BLACK);
+            // check les collisions entre poneShape et la grille
             checkBounds(this.poneShape, this.grid.getGrid(), false);
+            // check les collisions entre poneShape et les stock de Pones
             checkBounds(this.poneShape, ((GamePane)parent).getPones(), false);
             if(!physicsEnable) {
                 playCollisionSound();
                 compensateCollisionEffect = true;
             }
         }
-    }
-    
-    private void compensateCollisionEffect() {
-        
     }
 
     private void enablePhysics() {
