@@ -160,5 +160,5 @@
 }
 
 .leg {
-    -fx-fill: blue;
+    -fx-fill: linear-gradient(#022a88, #395cab);
 }
