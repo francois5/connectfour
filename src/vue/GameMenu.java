@@ -16,8 +16,11 @@ public class GameMenu extends Pane {
     private final Menu gameMenu;
     private final Menu soundMenu;
     private final Menu difficulty;
+    private final Menu styleMenu;
     private final MenuItem newGame;
     private final MenuItem exit;
+    private final MenuItem basicTheme;
+    private final MenuItem darkTheme;
     private final ToggleGroup tGroup;
     private final RadioMenuItem easy;
     private final RadioMenuItem normal;
@@ -45,10 +48,12 @@ public class GameMenu extends Pane {
         gameMenu = new Menu("Game");
         soundMenu = new Menu("Sound");
         difficulty = new Menu("Difficulty");
+        styleMenu = new Menu("Appearance");
         
         // Ajout des menus dans la barre
         menuBar.getMenus().add(gameMenu);
         menuBar.getMenus().add(soundMenu);
+        menuBar.getMenus().add(styleMenu);
         
         // Ajout de la barre de menu dans le Pane
         super.getChildren().add(menuBar);
@@ -56,6 +61,8 @@ public class GameMenu extends Pane {
         // création des menu items
         newGame = new MenuItem("New Game");
         exit = new MenuItem("Exit");
+        basicTheme = new MenuItem("Basic");
+        darkTheme = new MenuItem("Dark");
         
         // Création d'un toggle pour choix unique de la difficulty
         tGroup = new ToggleGroup();
@@ -74,7 +81,10 @@ public class GameMenu extends Pane {
         gameMenu.getItems().addAll(newGame, difficulty, 
                 new SeparatorMenuItem(), exit);
         soundMenu.getItems().addAll(on);
+        styleMenu.getItems().addAll(darkTheme, basicTheme);
         
+        
+        cssStyle("/basictheme.css");
         addKeyListeners();
         
     }
@@ -89,5 +99,21 @@ public class GameMenu extends Pane {
             this.gameStage.setBottomRoot(this.footerPane);
             this.footerPane.anime();
         });
+        
+        basicTheme.setOnAction(e -> {
+            cssStyle("/basictheme.css");
+        });
+        
+        darkTheme.setOnAction(e ->{
+            cssStyle("/darktheme.css");
+        });
+    }
+    
+    private void cssStyle (String theme) {
+        // Note - CSS file has to be in src dir
+        String css = GameMenu.class.getResource(theme).toExternalForm();
+                
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(css);
     }
 }

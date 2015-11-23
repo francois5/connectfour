@@ -33,10 +33,7 @@ public class GameStage extends Stage {
         //root.setCenter(gamePane);
         //root.setBottom(footerPane);
         
-        // Note - CSS file has to be in src dir
-        String css = GameStage.class.getResource("/darktheme.css").toExternalForm();
-        scene.getStylesheets().clear();
-        scene.getStylesheets().add(css);
+        
         
         MyGameLoop loop = new MyGameLoop(gamePane);
         loop.start();
