@@ -18,6 +18,7 @@ public class Pone {
     private Ellipse poneShape;
     private GameGrid grid;
     private Pane parent;
+    private Sound sound;
     
     private Double xPercentage;
     private Double yPercentage;
@@ -163,7 +164,8 @@ public class Pone {
     }
 
     private void playCollisionSound() {
-        ((GamePane)parent).getInstru().note_on(time);
+        //((GamePane)parent).getInstru().note_on(time);
+        sound.play();
     }
     
     private void goHome() {

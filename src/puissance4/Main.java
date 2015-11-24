@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.Part;
 import model.Player;
+import model.Sound;
 
 
 /**
@@ -15,6 +16,8 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) throws IOException {
+        Sound sound = new Sound();
+        sound.play();
         Part p = new Part(new Player("sebastien"), new Player("françois"));
     }
     
