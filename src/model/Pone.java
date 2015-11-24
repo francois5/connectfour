@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
@@ -51,8 +52,6 @@ public class Pone {
         this.poneShape.setTranslateY(height*homeYPercentage);
         this.xPercentage = poneShape.getTranslateX()/width;
         this.yPercentage = poneShape.getTranslateY()/height;
-        //this.poneShape.setFill(Color.BLACK);
-        //this.poneShape.toBack();
     }
     
     public Shape getPoneShape() {
@@ -104,10 +103,8 @@ public class Pone {
         
         // Si enable est à true, la collision a déja eu lieu
         // Donc on réactive la physique
-        if (!disabled && enable) {
-            System.out.println("enable");
+        if (!disabled && enable)
             enablePhysics();
-        }
     }
     
     public void notifySceneWidth(Double oldSceneWidth, Double newSceneWidth) {
@@ -124,25 +121,13 @@ public class Pone {
     }
 
     public void update() {
-        if(compensateCollisionEffect) {
-            this.poneShape.setTranslateY(this.poneShape.getTranslateY() - 1);
-            // check les collisions entre poneShape et la grille
-            checkBounds(this.poneShape, this.grid.getGrid(), true);
-            // check les collisions entre poneShape et les stock de Pones
-            checkBounds(this.poneShape, ((GamePane)parent).getPones(), true);
-            if(physicsEnable) {
-                //this.poneShape.setTranslateY(this.poneShape.getTranslateY() + 1);
-                compensateCollisionEffect = false;
-                physicsEnable = false;
-            }
-        }
+        if(compensateCollisionEffect)
+            compensateCollisionEffect();
         else if(physicsEnable) {
             ++time;
             speed = gravitationalAcceleration(speed);
             this.poneShape.setTranslateY(this.poneShape.getTranslateY() + (speed/1000));
             recalculatePercentages();
-            //this.poneShape.setFill(Color.BLACK);
-            // check les collisions entre poneShape et la grille
             checkBounds(this.poneShape, this.grid.getGrid(), false);
             // check les collisions entre poneShape et les stock de Pones
             checkBounds(this.poneShape, ((GamePane)parent).getPones(), false);
@@ -150,6 +135,17 @@ public class Pone {
                 playCollisionSound();
                 compensateCollisionEffect = true;
             }
+        }
+    }
+    
+    private void compensateCollisionEffect() {
+        this.poneShape.setTranslateY(this.poneShape.getTranslateY() - 1);
+        ArrayList<Shape> concatPoneGrid = new ArrayList<Shape>(this.grid.getGrid());
+        concatPoneGrid.addAll(((GamePane) parent).getPones());
+        checkBounds(this.poneShape, concatPoneGrid, true);
+        if (physicsEnable) {
+            compensateCollisionEffect = false;
+            physicsEnable = false;
         }
     }
 
@@ -174,7 +170,6 @@ public class Pone {
         this.poneShape.setTranslateX(parent.getWidth()*homeXPercentage);
         this.poneShape.setTranslateY(parent.getHeight()*homeYPercentage);
         this.recalculatePercentages();
-        //this.poneShape.setFill(Color.BLACK);
     }
 
     private boolean validMove() {
