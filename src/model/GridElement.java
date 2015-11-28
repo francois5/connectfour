@@ -44,9 +44,9 @@ public class GridElement {
     
     private void buildShape() {
         if(!vertical)
-            this.gridElementShape = new Rectangle((parentWidth-(parentWidth*(2/6))), ((5d/800d)*parentWidth));
+            this.gridElementShape = new Rectangle((parentWidth-(parentWidth*(2/6))), 0.01d);//((5d/800d)*parentWidth));
         else
-            gridElementShape = new Rectangle(((5d/800d)*parentWidth), parentHeight*0.8f);
+            gridElementShape = new Rectangle(0.01d, parentHeight*0.8f);//(((5d/800d)*parentWidth), parentHeight*0.8f);
     }
     
     private void repos() {
@@ -56,10 +56,10 @@ public class GridElement {
             gridElementShape.setTranslateX(parentWidth*(1d/6d));
         }
         else {
-            gridElementShape.setWidth(((5d/800d)*parentWidth));
+            //gridElementShape.setWidth(0.01d);//(((5d/800d)*parentWidth));
             gridElementShape.setHeight(parentHeight*0.8f);
             gridElementShape.setTranslateX(((((parentWidth-(parentWidth*(2d/6d))) / 7d ) 
-                    * nbCol)-(nbCol-1)) + (parentWidth*(1d/6d)));
+                    * nbCol)) + (parentWidth*(1d/6d)));
             gridElementShape.setTranslateY(parentHeight / 3.6);
         }
     }

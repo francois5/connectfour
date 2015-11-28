@@ -18,7 +18,7 @@ public class Pone {
     private Ellipse poneShape;
     private GameGrid grid;
     private Pane parent;
-    private Sound sound;
+    private Sound sound = new Sound();
     
     private Double xPercentage;
     private Double yPercentage;
@@ -29,6 +29,7 @@ public class Pone {
     private int time;
     private int g = 9;
     private boolean compensateCollisionEffect = false;
+    private boolean stickToColumn = false;
     
     public Pone(GameGrid grid,  Pane parent, Double homeXPercentage , 
             Double homeYPercentage) {
@@ -77,12 +78,38 @@ public class Pone {
         e.setOnMouseDragged((MouseEvent mouseEvent) -> {
             e.setTranslateX(mouseEvent.getSceneX() + dragDelta.x);
             e.setTranslateY(mouseEvent.getSceneY() + dragDelta.y);
-            
+            stickToColumns();
             recalculatePercentages();
             
             checkBounds(e, grid.getGrid(), false);
             checkBounds(e, ((GamePane)parent).getPones(), false);
         });
+    }
+    
+    private void stickToColumns() {
+        double location = locationOfStickyColumnInAttractionRange();
+        if(location != 0) {
+            stickToColumn = true;
+            poneShape.setTranslateX(location);
+        }
+        else
+            stickToColumn = false;
+    }
+    
+    private double locationOfStickyColumnInAttractionRange() {
+        double gridBegin = poneShape.radiusXProperty().get()*4;
+        double gridEnd = parent.getWidth()-gridBegin;
+        double columnWidth = (gridEnd-gridBegin)/7;
+        double[] rectifications = new double[] {1.5,1,0.5,0,-0.5,-1,-1.5};
+        multVect(rectifications, parent.getWidth()/300);
+        double columnsAttractionRadius = 10*(parent.getWidth()/300);
+        for(int i = 0; i < 7; ++i) {
+            double columnLocation = (gridBegin+rectifications[i]+columnWidth/2)+i*columnWidth;
+            if(poneShape.getTranslateX() >= columnLocation-columnsAttractionRadius 
+                    && poneShape.getTranslateX() <= columnLocation+columnsAttractionRadius)
+                return columnLocation;
+        }
+        return 0;
     }
     
     // check collision
@@ -175,8 +202,12 @@ public class Pone {
     }
 
     private boolean validMove() {
-        // to do
-        return true;
+        return stickToColumn;
+    }
+    
+    public void multVect(double[] v, double x) {
+        for (int i = 0; i < v.length; ++i)
+            v[i] = v[i] * x;
     }
     
     class Delta {
