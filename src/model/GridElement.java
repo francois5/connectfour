@@ -20,6 +20,7 @@ public class GridElement {
     private boolean vertical;
     private Double parentWidth, parentHeight;
     private int nbCol;
+    private boolean attached = false;
     
     public GridElement(Pane parent, Double parentWidth, Double parentHeight, boolean vertical, int nbCol) {
         this.parent = parent;
@@ -29,7 +30,7 @@ public class GridElement {
         this.nbCol = nbCol;
         buildShape();
         repos();
-        this.parent.getChildren().add(gridElementShape);
+        attach();
     }
     
     public void notifySceneWidth(Double newSceneWidth) {
@@ -67,4 +68,23 @@ public class GridElement {
     public Shape getGridElementShape() {
         return gridElementShape;
     }
+    
+    public void detach() {
+        if(attached) {
+            this.parent.getChildren().remove(gridElementShape);
+            attached = false;
+        }
+    }
+    
+    public void attach() {
+        if(!attached) {
+            this.parent.getChildren().add(gridElementShape);
+            attached = true;
+        }
+    }
+
+    public boolean isAttached() {
+        return attached;
+    }
+    
 }

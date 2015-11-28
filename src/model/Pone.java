@@ -24,12 +24,14 @@ public class Pone {
     private Double yPercentage;
     private Double homeXPercentage;
     private Double homeYPercentage;
+    private boolean isHome = true;
     private boolean physicsEnable = false;
     private int speed;
     private int time;
     private int g = 9;
     private boolean compensateCollisionEffect = false;
     private boolean stickToColumn = false;
+    private boolean gridCleaningRequested = false;
     
     public Pone(GameGrid grid,  Pane parent, Double homeXPercentage , 
             Double homeYPercentage) {
@@ -83,6 +85,7 @@ public class Pone {
             
             checkBounds(e, grid.getGrid(), false);
             checkBounds(e, ((GamePane)parent).getPones(), false);
+            this.isHome = false;
         });
     }
     
@@ -130,9 +133,10 @@ public class Pone {
         // Il n'y a pas eu de collision
         
         // Si enable est à true, la collision a déja eu lieu
-        // Donc on réactive la physique
-        if (!disabled && enable)
-            enablePhysics();
+        // Donc on arrete de compenser l'effet de la collision
+        if (!disabled && enable){
+            compensateCollisionEffect = false;
+        }
     }
     
     public void notifySceneWidth(Double oldSceneWidth, Double newSceneWidth) {
@@ -149,20 +153,29 @@ public class Pone {
     }
 
     public void update() {
-        if(compensateCollisionEffect)
+        if(gridCleaningRequested) {
+            internalCleanGameGrid();
+            if(physicsEnable)
+                fall(false);
+        }
+        else if(compensateCollisionEffect)
             compensateCollisionEffect();
         else if(physicsEnable) {
-            ++time;
-            speed = gravitationalAcceleration(speed);
-            this.poneShape.setTranslateY(this.poneShape.getTranslateY() + (speed/1000));
-            recalculatePercentages();
-            checkBounds(this.poneShape, this.grid.getGrid(), false);
-            // check les collisions entre poneShape et les stock de Pones
-            checkBounds(this.poneShape, ((GamePane)parent).getPones(), false);
-            if(!physicsEnable) {
-                playCollisionSound();
-                compensateCollisionEffect = true;
-            }
+            fall(true);
+        }
+    }
+    
+    private void fall(boolean hitOtherPones) {
+        ++time;
+        speed = gravitationalAcceleration(speed);
+        this.poneShape.setTranslateY(this.poneShape.getTranslateY() + (speed / 1000));
+        recalculatePercentages();
+        checkBounds(this.poneShape, this.grid.getGrid(), false);
+        if(hitOtherPones)
+            checkBounds(this.poneShape, ((GamePane) parent).getPones(), false);
+        if (!physicsEnable) {
+            playCollisionSound();
+            compensateCollisionEffect = true;
         }
     }
     
@@ -171,10 +184,6 @@ public class Pone {
         ArrayList<Shape> concatPoneGrid = new ArrayList<Shape>(this.grid.getGrid());
         concatPoneGrid.addAll(((GamePane) parent).getPones());
         checkBounds(this.poneShape, concatPoneGrid, true);
-        if (physicsEnable) {
-            compensateCollisionEffect = false;
-            physicsEnable = false;
-        }
     }
 
     private void enablePhysics() {
@@ -196,9 +205,11 @@ public class Pone {
     }
     
     private void goHome() {
+        this.disablePhysics();
         this.poneShape.setTranslateX(parent.getWidth()*homeXPercentage);
         this.poneShape.setTranslateY(parent.getHeight()*homeYPercentage);
         this.recalculatePercentages();
+        this.isHome = true;
     }
 
     private boolean validMove() {
@@ -208,6 +219,32 @@ public class Pone {
     public void multVect(double[] v, double x) {
         for (int i = 0; i < v.length; ++i)
             v[i] = v[i] * x;
+    }
+
+    public void cleanGameGrid() {
+        gridCleaningRequested = true;
+    }
+    
+    private void internalCleanGameGrid() {
+        if(!isHome && !physicsEnable) {
+            enablePhysics();
+        }
+        if(hitTheFloor()) {
+            goHome();
+            gridCleaningRequested = false;
+            compensateCollisionEffect = false;
+        }
+    }
+
+    private boolean hitTheFloor() {
+        checkBounds(poneShape, grid.getGrid(), false);
+        if(physicsEnable)
+            return false;
+        return true;
+    }
+
+    boolean isHome() {
+        return isHome;
     }
     
     class Delta {

@@ -14,9 +14,10 @@ import vue.GamePane;
  */
 public class Part {
     private Player[] players = new Player[2];
-    private final GameStage gameStage = new GameStage();
+    private GameStage gameStage;
     
-    public Part(Player player1, Player player2) {
+    public Part(GameStage gameStage, Player player1, Player player2) {
+        this.gameStage = gameStage;
         players[0] = player1;
         players[1] = player2;
     }
@@ -39,4 +40,5 @@ public class Part {
         }
         
     }
+    
 }

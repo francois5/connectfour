@@ -30,14 +30,12 @@ public class GameMenu extends Pane {
     private Scene scene;
     private GamePane gamePane;
     private GameStage gameStage;
-    private final FooterPane footerPane;
     
     public GameMenu(GamePane gamePane, Scene scene, 
             GameStage gameStage) {
         this.scene = scene;
         this.gamePane = gamePane;
         this.gameStage = gameStage;
-        footerPane = new FooterPane(scene);
         
         // barre de menu
         menuBar = new MenuBar();
@@ -95,9 +93,7 @@ public class GameMenu extends Pane {
         });
         
         newGame.setOnAction(e -> {
-            this.gameStage.setCenterRoot(this.gamePane);
-            this.gameStage.setBottomRoot(this.footerPane);
-            this.footerPane.anime();
+            this.gameStage.newGame();
         });
         
         basicTheme.setOnAction(e -> {

@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 /**
@@ -24,9 +25,8 @@ public class GameGrid extends Pane {
     
     private Image image = new Image("grid.png");
     private ImageView imageView = new ImageView();
-    private DoubleProperty width;
-    private DoubleProperty height;
     private List<GridElement> grid = new ArrayList<GridElement>();
+    Rectangle floor;
     private Pane parent;
     
     public GameGrid(double width, double height, Pane parent) {
@@ -66,11 +66,14 @@ public class GameGrid extends Pane {
     }
     
     public void init(Double width, Double height) {
-        this.grid = buildGameGrid(width, height);
+        this.grid = rebuildGameGrid(width, height);
+        floor = new Rectangle(width+(parent.getHeight()/3), 10d);
+        floor.setTranslateY(height-35);//+(height/3.1));
+        parent.getChildren().add(floor);
         setSizeListeners();
     }
     
-    private List<GridElement> buildGameGrid(Double width, Double height) {
+    private List<GridElement> rebuildGameGrid(Double width, Double height) {
         for(int i = 0; i < NBCOLUMNS; ++i) {
             grid.add(new GridElement(parent, width, height, true, i));
         }
@@ -81,25 +84,43 @@ public class GameGrid extends Pane {
     public List<Shape> getGrid() {
         List<Shape> list = new ArrayList<>();
         for(GridElement gE : grid) {
-            list.add(gE.getGridElementShape());
+            if(gE.isAttached())
+                list.add(gE.getGridElementShape());
         }
+        list.add(floor);
+        
         return list;
     }
     
+    
+    public void open() {
+        grid.get(grid.size()-1).detach();
+    }
+    
+    public void close() {
+        grid.get(grid.size()-1).attach();
+    }
     
     public void notifySceneWidth(Double newSceneWidth) {
         for(GridElement gElement : grid) {
             gElement.notifySceneWidth(newSceneWidth);
         }
+        repos(floor, newSceneWidth, null);
     }
-
+    
     public void notifySceneHeight(Double newSceneHeight) {
         for(GridElement gElement : grid) {
             gElement.notifySceneHeight(newSceneHeight);
         }
+        repos(floor, null, newSceneHeight);
     }
     
     public ImageView getImage() {
         return this.imageView;
+    }
+
+    private void repos(Rectangle floor, Double w, Double h) {
+        if     (w != null) floor.setWidth(w);
+        else if(h != null) floor.setTranslateY(h*1.25);
     }
 }

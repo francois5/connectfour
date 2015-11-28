@@ -109,4 +109,16 @@ public class PoneStock extends Pane {
             p.update();
         }
     }
+
+    public void cleanGameGrid() {
+        for(Pone pone : stock)
+            pone.cleanGameGrid();
+    }
+    
+    public boolean allPoneHome() {
+        for(Pone pone : stock)
+            if(!pone.isHome())
+                return false;
+        return true;
+    }
 }

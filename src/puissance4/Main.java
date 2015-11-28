@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         Sound sound = new Sound();
         sound.play();
-        Part p = new Part(new Player("sebastien"), new Player("françois"));
+        GameStage gameStage = new GameStage();
     }
     
     
