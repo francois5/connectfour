@@ -50,7 +50,7 @@ public class GameStage extends Stage {
         this.getIcons().add(new Image("icon.png"));
         
         this.setScene(scene);
-        this.show();
+        //this.show();
     }
     
     public void setCenterRoot(Pane pane) {
@@ -75,6 +75,7 @@ public class GameStage extends Stage {
         else {
             cleanGameGrid();
         }
+        this.show();
     }
 
     public void startNewPart() {

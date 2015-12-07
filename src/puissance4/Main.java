@@ -16,7 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Sound sound = new Sound();
-        sound.play();
+        //sound.play();
         HomeStage homeStage = new HomeStage();
         //GameStage gameStage = new GameStage();
     }
