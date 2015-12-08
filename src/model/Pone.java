@@ -18,7 +18,7 @@ public class Pone {
     private Ellipse poneShape;
     private GameGrid grid;
     private Pane parent;
-    private Sound sound = new Sound();
+    private Sound sound = SoundFactory.getSound();
     
     private Double xPercentage;
     private Double yPercentage;

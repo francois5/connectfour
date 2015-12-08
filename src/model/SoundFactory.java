@@ -9,7 +9,13 @@ package model;
  *
  * @author seb
  */
-public interface Sound {
-    public void play();
+public class SoundFactory {
+    private static Sound sound = null;
     
+    public static Sound getSound() {
+        if(sound == null) {
+            sound = new SoundImpl();
+        }
+        return sound;
+    }
 }

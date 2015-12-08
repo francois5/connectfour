@@ -39,8 +39,6 @@ public class GameStage extends Stage {
         //root.setCenter(gamePane);
         //root.setBottom(footerPane);
         
-        
-        
         MyGameLoop loop = new MyGameLoop(gamePane);
         loop.start();
         
