@@ -4,7 +4,8 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import model.Instru;
+import model.Sound;
+import model.SoundFactory;
 import puissance4.GameStage;
 
 /**
@@ -30,6 +31,7 @@ public class GameMenu extends Pane {
     private Scene scene;
     private GamePane gamePane;
     private GameStage gameStage;
+    private Sound sound = SoundFactory.getSound();
     
     public GameMenu(GamePane gamePane, Scene scene, 
             GameStage gameStage) {
@@ -102,6 +104,15 @@ public class GameMenu extends Pane {
         
         darkTheme.setOnAction(e ->{
             cssStyle("/darktheme.css");
+        });
+        
+        on.setOnAction(e -> {
+            if(sound.getIsOn()) {
+                sound.setOff();
+            }
+            else {
+                sound.setOn();
+            }
         });
     }
     

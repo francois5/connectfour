@@ -11,5 +11,7 @@ package model;
  */
 public interface Sound {
     public void play();
-    
+    public void setOff();
+    public void setOn();
+    public boolean getIsOn();
 }
