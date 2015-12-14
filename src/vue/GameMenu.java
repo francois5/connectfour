@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import model.Sound;
 import model.SoundFactory;
 import puissance4.GameStage;
@@ -116,7 +117,12 @@ public class GameMenu extends Pane {
         });
         
         game.setOnAction(e -> {
-           homeStage.display();
+            // 2 étapes pour bloquer les autres fenêtre
+            // 1 : initOwner () reçoit la fenêtre à bloquer
+            homeStage.initOwner(gameStage);
+            // 2 : initModality à WINDOW_MODAL
+            homeStage.initModality(Modality.WINDOW_MODAL);
+            homeStage.display();
            
         });
     }
