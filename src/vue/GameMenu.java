@@ -16,24 +16,30 @@ public class GameMenu extends Pane {
     private final MenuBar menuBar;
     private final Menu gameMenu;
     private final Menu soundMenu;
+    private final Menu difficulty;
     private final Menu styleMenu;
-    private final MenuItem newGame;
+    private final MenuItem game;
     private final MenuItem exit;
     private final MenuItem basicTheme;
     private final MenuItem darkTheme;
-    private final ToggleGroup tGroup;
+    //private final ToggleGroup tGroup;
+    //private final RadioMenuItem easy;
+    //private final RadioMenuItem normal;
+    //private final RadioMenuItem difficult;
     private final CheckMenuItem on;
     
     private Scene scene;
     private GamePane gamePane;
     private GameStage gameStage;
     private Sound sound = SoundFactory.getSound();
+    private HomeStage homeStage;
     
     public GameMenu(GamePane gamePane, Scene scene, 
             GameStage gameStage) {
         this.scene = scene;
         this.gamePane = gamePane;
         this.gameStage = gameStage;
+        this.homeStage = new HomeStage(gameStage);
         
         // barre de menu
         menuBar = new MenuBar();
@@ -41,8 +47,9 @@ public class GameMenu extends Pane {
         menuBar.prefWidthProperty().bind(scene.widthProperty());
         
         // menus
-        gameMenu = new Menu("Game");
+        gameMenu = new Menu("Menu");
         soundMenu = new Menu("Sound");
+        difficulty = new Menu("Difficulty");
         styleMenu = new Menu("Appearance");
         
         // Ajout des menus dans la barre
@@ -54,19 +61,29 @@ public class GameMenu extends Pane {
         super.getChildren().add(menuBar);
         
         // création des menu items
-        newGame = new MenuItem("New Game");
+        game = new MenuItem("Game");
         exit = new MenuItem("Exit");
         basicTheme = new MenuItem("Basic");
         darkTheme = new MenuItem("Dark");
         
-        // Création d'un toggle pour choix unique de la difficulty
-        tGroup = new ToggleGroup();
         
+        // Création d'un toggle pour choix unique de la difficulty
+        // tGroup = new ToggleGroup();
+        
+        //easy = new RadioMenuItem("Easy");
+        //easy.setToggleGroup(tGroup);
+        //normal = new RadioMenuItem("Normal");
+        //normal.setToggleGroup(tGroup);
+        //normal.setSelected(true);
+        //difficult = new RadioMenuItem("Difficult");
+        //difficult.setToggleGroup(tGroup);
         on = new CheckMenuItem("On");
         on.setSelected(true);
         
-        gameMenu.getItems().addAll(newGame, 
-                new SeparatorMenuItem(), exit);
+        //difficulty.getItems().addAll(easy, normal, difficult);
+        gameMenu.getItems().addAll(game, new SeparatorMenuItem(), exit);
+        
+        
         soundMenu.getItems().addAll(on);
         styleMenu.getItems().addAll(darkTheme, basicTheme);
         
@@ -79,10 +96,6 @@ public class GameMenu extends Pane {
     private void addKeyListeners() {
         exit.setOnAction(e -> {
             Platform.exit();
-        });
-        
-        newGame.setOnAction(e -> {
-            this.gameStage.newGame();
         });
         
         basicTheme.setOnAction(e -> {
@@ -100,6 +113,11 @@ public class GameMenu extends Pane {
             else {
                 sound.setOn();
             }
+        });
+        
+        game.setOnAction(e -> {
+           homeStage.display();
+           
         });
     }
     

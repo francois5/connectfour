@@ -26,16 +26,20 @@ public class HomeStage extends Stage {
     private Scene scene = new Scene(vBox, WIDTH, HEIGHT);
     private final Button[] buttons = new Button[3];
     private static final String[] buttonNames = {"New Game", "Continue", "Quit"};
-    private final GameStage gameStage = new GameStage();
+    private final GameStage gameStage;
     
     
-    public HomeStage() {
+    public HomeStage(GameStage gameStage) {
+        this.gameStage = gameStage;
         this.initStyle(StageStyle.UNDECORATED);
         this.setResizable(false);
         
         addButtons();
         designVbox();
         setActionListeners();
+    }
+    
+    public void display() {
         this.setTitle("Home");
         this.setScene(scene);
         this.show();
