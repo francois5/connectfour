@@ -16,7 +16,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         //Sound sound = SoundFactory.getSound();
         //sound.play();
-        new HomeStage();
+        GameStage g = new GameStage();
+        g.newGame();
     }
     
     

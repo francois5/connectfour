@@ -16,16 +16,12 @@ public class GameMenu extends Pane {
     private final MenuBar menuBar;
     private final Menu gameMenu;
     private final Menu soundMenu;
-    private final Menu difficulty;
     private final Menu styleMenu;
     private final MenuItem newGame;
     private final MenuItem exit;
     private final MenuItem basicTheme;
     private final MenuItem darkTheme;
     private final ToggleGroup tGroup;
-    private final RadioMenuItem easy;
-    private final RadioMenuItem normal;
-    private final RadioMenuItem difficult;
     private final CheckMenuItem on;
     
     private Scene scene;
@@ -47,7 +43,6 @@ public class GameMenu extends Pane {
         // menus
         gameMenu = new Menu("Game");
         soundMenu = new Menu("Sound");
-        difficulty = new Menu("Difficulty");
         styleMenu = new Menu("Appearance");
         
         // Ajout des menus dans la barre
@@ -67,18 +62,10 @@ public class GameMenu extends Pane {
         // Création d'un toggle pour choix unique de la difficulty
         tGroup = new ToggleGroup();
         
-        easy = new RadioMenuItem("Easy");
-        easy.setToggleGroup(tGroup);
-        normal = new RadioMenuItem("Normal");
-        normal.setToggleGroup(tGroup);
-        normal.setSelected(true);
-        difficult = new RadioMenuItem("Difficult");
-        difficult.setToggleGroup(tGroup);
         on = new CheckMenuItem("On");
         on.setSelected(true);
         
-        difficulty.getItems().addAll(easy, normal, difficult);
-        gameMenu.getItems().addAll(newGame, difficulty, 
+        gameMenu.getItems().addAll(newGame, 
                 new SeparatorMenuItem(), exit);
         soundMenu.getItems().addAll(on);
         styleMenu.getItems().addAll(darkTheme, basicTheme);
