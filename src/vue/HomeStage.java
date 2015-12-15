@@ -73,6 +73,7 @@ public class HomeStage extends Stage {
         
         buttons[1].setOnAction(e -> {
             this.gameMenu.gameMenuCss("/basictheme.css");
+            this.close();
         });
         
         buttons[2].setOnAction(e -> {
