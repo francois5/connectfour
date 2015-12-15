@@ -85,5 +85,6 @@ public class GamePane extends Pane {
         this.leftPoneStock.cleanGameGrid();
         this.rightPoneStock.cleanGameGrid();
     }
+    
 
 }

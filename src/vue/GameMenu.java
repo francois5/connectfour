@@ -17,7 +17,7 @@ public class GameMenu extends Pane {
     private final MenuBar menuBar;
     private final Menu gameMenu;
     private final Menu soundMenu;
-    private final Menu difficulty;
+    //private final Menu difficulty;
     private final Menu styleMenu;
     private final MenuItem game;
     private final MenuItem exit;
@@ -40,7 +40,7 @@ public class GameMenu extends Pane {
         this.scene = scene;
         this.gamePane = gamePane;
         this.gameStage = gameStage;
-        this.homeStage = new HomeStage(gameStage);
+        this.homeStage = new HomeStage(gameStage, this);
         
         // barre de menu
         menuBar = new MenuBar();
@@ -50,7 +50,7 @@ public class GameMenu extends Pane {
         // menus
         gameMenu = new Menu("Menu");
         soundMenu = new Menu("Sound");
-        difficulty = new Menu("Difficulty");
+        //difficulty = new Menu("Difficulty");
         styleMenu = new Menu("Appearance");
         
         // Ajout des menus dans la barre
@@ -89,7 +89,7 @@ public class GameMenu extends Pane {
         styleMenu.getItems().addAll(darkTheme, basicTheme);
         
         
-        cssStyle("/basictheme.css");
+        gameMenuCss("/gamemenu.css");
         addKeyListeners();
         
     }
@@ -100,11 +100,11 @@ public class GameMenu extends Pane {
         });
         
         basicTheme.setOnAction(e -> {
-            cssStyle("/basictheme.css");
+            gameMenuCss("/basictheme.css");
         });
         
         darkTheme.setOnAction(e ->{
-            cssStyle("/darktheme.css");
+            gameMenuCss("/darktheme.css");
         });
         
         on.setOnAction(e -> {
@@ -122,16 +122,20 @@ public class GameMenu extends Pane {
             homeStage.initOwner(gameStage);
             // 2 : initModality à WINDOW_MODAL
             homeStage.initModality(Modality.WINDOW_MODAL);
+            darken();
             homeStage.display();
-           
+            
         });
     }
     
-    private void cssStyle (String theme) {
+    public void gameMenuCss(String theme) {
         // Note - CSS file has to be in src dir
         String css = GameMenu.class.getResource(theme).toExternalForm();
-                
         scene.getStylesheets().clear();
         scene.getStylesheets().add(css);
+    }
+    
+    private void darken() {
+        gameMenuCss("/darken.css");
     }
 }

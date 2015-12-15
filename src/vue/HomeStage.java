@@ -28,16 +28,19 @@ public class HomeStage extends Stage {
     private final Button[] buttons = new Button[3];
     private static final String[] buttonNames = {"New Game", "Continue", "Quit"};
     private final GameStage gameStage;
+    private GameMenu gameMenu;
     
     
-    public HomeStage(GameStage gameStage) {
+    public HomeStage(GameStage gameStage, GameMenu parent) {
         this.gameStage = gameStage;
         this.initStyle(StageStyle.UNDECORATED);
         this.setResizable(false);
+        this.gameMenu = parent;
         
         addButtons();
         designVbox();
         setActionListeners();
+        cssStyle ("/homestage.css");
     }
     
     public void display() {
@@ -63,12 +66,25 @@ public class HomeStage extends Stage {
     private void setActionListeners() {
         
         buttons[0].setOnAction(e -> {
+            this.gameMenu.gameMenuCss("/basictheme.css");
             this.gameStage.newGame();
             this.close();
+        });
+        
+        buttons[1].setOnAction(e -> {
+            this.gameMenu.gameMenuCss("/basictheme.css");
         });
         
         buttons[2].setOnAction(e -> {
             Platform.exit();
         });
+    }
+    
+    private void cssStyle (String theme) {
+        // Note - CSS file has to be in src dir
+        String css = HomeStage.class.getResource(theme).toExternalForm();
+                
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(css);
     }
 }

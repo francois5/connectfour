@@ -1,0 +1,36 @@
+.root {
+    -fx-background-color : black;
+}
+
+.menu-bar .label {
+    -fx-font-size: 14pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: black;
+    -fx-opacity: 0.9;
+}
+
+.menu .left-container {
+    -fx-background-color: #d8d8d8;
+}
+
+.text-field {
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+}
+/*
+.pone-shape {
+    -fx-fill: blue;
+     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 10,0,1,10 );
+}
+*/
+.right-stock {
+    -fx-fill: linear-gradient(white, black);
+}
+
+.left-stock {
+    -fx-fill: linear-gradient(grey, black);
+}
+
+.leg {
+    -fx-fill: linear-gradient(gray, white);
+}
