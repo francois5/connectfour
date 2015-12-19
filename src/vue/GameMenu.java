@@ -3,8 +3,11 @@ package vue;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import model.GameGrid;
 import model.Sound;
 import model.SoundFactory;
 import puissance4.GameStage;
@@ -26,14 +29,15 @@ public class GameMenu extends Pane {
     
     private Scene scene;
     private GameStage gameStage;
+    private GamePane gamePane;
     private Sound sound = SoundFactory.getSound();
     private HomeStage homeStage;
+    private boolean isDarkTheme;
     
-    public GameMenu(Scene scene, 
-            GameStage gameStage) {
+    public GameMenu(Scene scene, GameStage gameStage, GamePane gamePane) {
         this.scene = scene;
         this.gameStage = gameStage;
-        //this.homeStage = new HomeStage(gameStage, this);
+        this.gamePane = gamePane;
         
         // barre de menu
         menuBar = new MenuBar();
@@ -60,31 +64,24 @@ public class GameMenu extends Pane {
         basicTheme = new MenuItem("Basic");
         darkTheme = new MenuItem("Dark");
         
-        
-        // Création d'un toggle pour choix unique de la difficulty
-        // tGroup = new ToggleGroup();
-        
-        //easy = new RadioMenuItem("Easy");
-        //easy.setToggleGroup(tGroup);
-        //normal = new RadioMenuItem("Normal");
-        //normal.setToggleGroup(tGroup);
-        //normal.setSelected(true);
-        //difficult = new RadioMenuItem("Difficult");
-        //difficult.setToggleGroup(tGroup);
         on = new CheckMenuItem("On");
         on.setSelected(true);
         
-        //difficulty.getItems().addAll(easy, normal, difficult);
         gameMenu.getItems().addAll(game, new SeparatorMenuItem(), exit);
-        
         
         soundMenu.getItems().addAll(on);
         styleMenu.getItems().addAll(darkTheme, basicTheme);
         
-        
         gameMenuCss("/gamemenu.css");
         addKeyListeners();
-        
+    }
+    
+    private void setIsDarkTheme(boolean bool) {
+        this.isDarkTheme = bool;
+    }
+    
+    public boolean isDarkTheme() {
+        return isDarkTheme;
     }
     
     private void addKeyListeners() {
@@ -98,6 +95,7 @@ public class GameMenu extends Pane {
         
         darkTheme.setOnAction(e ->{
             gameMenuCss("/darktheme.css");
+            setIsDarkTheme(true);
         });
         
         on.setOnAction(e -> {
@@ -119,7 +117,6 @@ public class GameMenu extends Pane {
             
             darken();
             homeStage.display();
-            
         });
     }
     
@@ -132,5 +129,12 @@ public class GameMenu extends Pane {
     
     private void darken() {
         gameMenuCss("/darken.css");
+        setGridImage("darkgrid.png");
+    }
+    
+    public void setGridImage(String name) {
+        GameGrid gameGrid = gamePane.getGameGrid();
+        ImageView blueGrid = gameGrid.getImage();
+        blueGrid.setImage(new Image(name));
     }
 }

@@ -28,6 +28,10 @@ public class GamePane extends Pane {
     public GamePane() {
         super();
     }
+    
+    public GameGrid getGameGrid() {
+        return gameGrid;
+    }
 
     public void init(GameStage gameStage, Double width, Double height) {
         // Ajoute la grille sur le gamePane

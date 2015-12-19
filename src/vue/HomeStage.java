@@ -64,18 +64,32 @@ public class HomeStage extends Stage {
     }
     
     private void setActionListeners() {
-        
+        // new game
         buttons[0].setOnAction(e -> {
-            this.gameMenu.gameMenuCss("/basictheme.css");
+            if(gameMenu.isDarkTheme()) {
+                this.gameMenu.gameMenuCss("/darktheme.css");
+            }
+            else {
+                this.gameMenu.gameMenuCss("/basictheme.css");
+            }
+            
+            this.gameMenu.setGridImage("grid.png");
             this.gameStage.newGame();
             this.close();
         });
-        
+        // continue
         buttons[1].setOnAction(e -> {
-            this.gameMenu.gameMenuCss("/basictheme.css");
+            if(gameMenu.isDarkTheme()) {
+                this.gameMenu.gameMenuCss("/darktheme.css");
+            }
+            else {
+                this.gameMenu.gameMenuCss("/basictheme.css");
+            }
+            
+            this.gameMenu.setGridImage("grid.png");
             this.close();
         });
-        
+        // exit
         buttons[2].setOnAction(e -> {
             Platform.exit();
         });

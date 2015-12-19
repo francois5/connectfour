@@ -33,7 +33,7 @@ public class GameStage extends Stage {
         this.setTitle("Puissance 4 - Game");
         this.setMaxWidth(1200);
         this.setMinHeight(200);
-        gameMenu = new GameMenu(scene, this);
+        gameMenu = new GameMenu(scene, this, gamePane);
         footerPane = new FooterPane(scene);
         root.setTop(gameMenu);
         //root.setCenter(gamePane);
