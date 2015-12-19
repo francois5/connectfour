@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Part;
 import model.Player;
@@ -34,7 +33,7 @@ public class GameStage extends Stage {
         this.setTitle("Puissance 4 - Game");
         this.setMaxWidth(1200);
         this.setMinHeight(200);
-        gameMenu = new GameMenu(gamePane, scene, this);
+        gameMenu = new GameMenu(scene, this);
         footerPane = new FooterPane(scene);
         root.setTop(gameMenu);
         //root.setCenter(gamePane);

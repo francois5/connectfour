@@ -17,28 +17,21 @@ public class GameMenu extends Pane {
     private final MenuBar menuBar;
     private final Menu gameMenu;
     private final Menu soundMenu;
-    //private final Menu difficulty;
     private final Menu styleMenu;
     private final MenuItem game;
     private final MenuItem exit;
     private final MenuItem basicTheme;
     private final MenuItem darkTheme;
-    //private final ToggleGroup tGroup;
-    //private final RadioMenuItem easy;
-    //private final RadioMenuItem normal;
-    //private final RadioMenuItem difficult;
     private final CheckMenuItem on;
     
     private Scene scene;
-    private GamePane gamePane;
     private GameStage gameStage;
     private Sound sound = SoundFactory.getSound();
     private HomeStage homeStage;
     
-    public GameMenu(GamePane gamePane, Scene scene, 
+    public GameMenu(Scene scene, 
             GameStage gameStage) {
         this.scene = scene;
-        this.gamePane = gamePane;
         this.gameStage = gameStage;
         this.homeStage = new HomeStage(gameStage, this);
         
