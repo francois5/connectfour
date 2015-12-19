@@ -33,7 +33,7 @@ public class GameMenu extends Pane {
             GameStage gameStage) {
         this.scene = scene;
         this.gameStage = gameStage;
-        this.homeStage = new HomeStage(gameStage, this);
+        //this.homeStage = new HomeStage(gameStage, this);
         
         // barre de menu
         menuBar = new MenuBar();
@@ -110,11 +110,13 @@ public class GameMenu extends Pane {
         });
         
         game.setOnAction(e -> {
+            this.homeStage = new HomeStage(gameStage, this);
             // 2 étapes pour bloquer les autres fenêtre
             // 1 : initOwner () reçoit la fenêtre à bloquer
             homeStage.initOwner(gameStage);
             // 2 : initModality à WINDOW_MODAL
             homeStage.initModality(Modality.WINDOW_MODAL);
+            
             darken();
             homeStage.display();
             
