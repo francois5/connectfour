@@ -46,7 +46,7 @@ public class PoneStock extends Pane {
         this.stock = fillPoneStock(width, height);
         
         for (Pone p : stock) {
-            this.gamePane.getChildren().add(p.getPoneShape());
+            this.getChildren().add(p.getPoneShape());
             p.init(width, height);
         }
         
