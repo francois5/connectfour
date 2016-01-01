@@ -82,6 +82,12 @@ public class Pone {
         });
     }
     
+    private void disableMouseListeners() {
+        poneShape.setOnMouseDragged(null);
+        poneShape.setOnMousePressed(null);
+        poneShape.setOnMouseReleased(null);
+    }
+    
     private void stickToColumns() {
         double location = locationOfStickyColumnInAttractionRange();
         if(location != 0) {
