@@ -64,13 +64,6 @@ public class Pone {
     
     public void setDragListeners(final Shape e) {
         final Delta dragDelta = new Delta();
-
-        e.setOnMousePressed((MouseEvent mouseEvent) -> {
-            disablePhysics();
-            dragDelta.x = e.getTranslateX() - mouseEvent.getSceneX();
-            dragDelta.y = e.getTranslateY() - mouseEvent.getSceneY();
-            e.setCursor(Cursor.NONE);
-        });
         e.setOnMouseReleased((MouseEvent mouseEvent) -> {
             if(validMove()) enablePhysics();
             else            goHome();
@@ -78,8 +71,8 @@ public class Pone {
             e.setCursor(Cursor.HAND);
         });
         e.setOnMouseDragged((MouseEvent mouseEvent) -> {
-            e.setTranslateX(mouseEvent.getSceneX() + dragDelta.x);
-            e.setTranslateY(mouseEvent.getSceneY() + dragDelta.y);
+            e.setTranslateX(e.getTranslateX() + mouseEvent.getX());
+            e.setTranslateY(e.getTranslateY() + mouseEvent.getY());
             stickToColumns();
             recalculatePercentages();
             

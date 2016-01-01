@@ -17,7 +17,7 @@ import puissance4.GameStage;
  *
  * @author localwsp
  */
-public class GamePane extends Pane {
+public class GamePane extends BorderPane {
     private GameGrid gameGrid = new GameGrid(600,600, this);
     private PoneStock rightPoneStock = new PoneStock(gameGrid, this, false);
     private PoneStock leftPoneStock = new PoneStock(gameGrid, this, true);
@@ -34,24 +34,15 @@ public class GamePane extends Pane {
     }
 
     public void init(GameStage gameStage, Double width, Double height) {
-        // Ajoute la grille sur le gamePane
         this.gameStage = gameStage;
         gameGrid.init(width, height);
-        //this.setCenter(gameGrid);
-        this.getChildren().add(gameGrid);
-        //this.setCenter(gameGrid);
-        //this.setRight(rightPoneStock);
-        //leftPoneStock.widthProperty().add(100);
-        //this.setLeft(leftPoneStock);
-        //this.setRight(rightPoneStock);
-        this.getChildren().add(rightPoneStock);
+        this.setCenter(gameGrid);
+        this.setRight(rightPoneStock);
         rightPoneStock.init(width, height);
-        //this.setLeft(leftPoneStock);
-        this.getChildren().add(leftPoneStock);
+        this.setLeft(leftPoneStock);
         leftPoneStock.init(width, height);
 
         gameGrid.initFrontImage();
-        //gameGrid.toFront();
     }
     
     @Override

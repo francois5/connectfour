@@ -1,9 +1,5 @@
 .root {
-    -fx-background-image: url('green-scheme.jpg');
-}
-
-.background {
-    -fx-background-color: #1d1d1d;
+    -fx-background-image: url('textureBrown.jpg');
 }
 
 .label {
