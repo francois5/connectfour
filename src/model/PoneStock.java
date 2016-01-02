@@ -18,9 +18,11 @@ public class PoneStock extends Pane {
     private ObservableList<Pone> stock;
     private GameGrid gameGrid;
     private GamePane gamePane;
+    private Play play;
     private boolean leftSide;
     
-    public PoneStock(GameGrid gameGrid, GamePane gamePane, boolean leftSide) {
+    public PoneStock(Play play, GameGrid gameGrid, GamePane gamePane, boolean leftSide) {
+        this.play = play;
         this.gameGrid = gameGrid;
         this.gamePane = gamePane;
         this.leftSide = leftSide;
@@ -62,7 +64,7 @@ public class PoneStock extends Pane {
         ObservableList<Pone> pones = FXCollections.observableArrayList();
         // left pone collumn
         for(int i = 0; i < NBPONE/2; ++i) {
-            Pone p = new Pone(gameGrid, gamePane, 
+            Pone p = new Pone(play, gameGrid, gamePane, 
                     (Double)((poneStockTranslationX+poneRadiusX)/width) , 
                     (Double)(((poneRadiusX)+((poneRadiusX*2)*i))/height) );
             colorPone(p);
@@ -70,7 +72,7 @@ public class PoneStock extends Pane {
         }
         // right pone collumn
         for(int i = 0; i <= NBPONE/2; ++i) {
-            Pone p = new Pone(gameGrid, gamePane, 
+            Pone p = new Pone(play, gameGrid, gamePane, 
                     (Double)((poneStockTranslationX+(poneRadiusX*3))/width) , 
                     (Double)((poneRadiusX+((poneRadiusX*2)*i))/height) );
             colorPone(p);

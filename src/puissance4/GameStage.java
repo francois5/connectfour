@@ -9,12 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Part;
+import model.Play;
 import model.Player;
 import vue.FooterPane;
 import vue.GameMenu;
 import vue.GamePane;
+import vue.ScorePane;
 
 /**
  *
@@ -22,20 +25,27 @@ import vue.GamePane;
  */
 public class GameStage extends Stage {
     private final BorderPane root = new BorderPane();
-    private final GamePane gamePane = new GamePane();
+    private final GamePane gamePane;
     private final GameMenu gameMenu;
+    private Play play = new Play();
+    private ScorePane scorePane = new ScorePane(play);
     private final Scene scene = new Scene(root, 900, 800);
     private Part currentPart;
     private final FooterPane footerPane;
     private boolean newPartToStart = true;
+    private VBox vBox = new VBox();
     
     public GameStage() {
         this.setTitle("Puissance 4 - Game");
         this.setMaxWidth(1200);
         this.setMinHeight(200);
+        
+        gamePane = new GamePane(play);
         gameMenu = new GameMenu(scene, this, gamePane);
         footerPane = new FooterPane(scene);
-        root.setTop(gameMenu);
+        
+        vBox.getChildren().addAll(gameMenu, scorePane);
+        root.setTop(vBox);
         //root.setCenter(gamePane);
         //root.setBottom(footerPane);
         
@@ -79,7 +89,7 @@ public class GameStage extends Stage {
     public void startNewPart() {
         if(newPartToStart) {
             this.currentPart = new Part(this, new Player("sebastien"), new Player("françois"));
-            this.setCenterRoot(this.gamePane);
+            this.setCenterRoot(gamePane);
             this.setBottomRoot(this.footerPane);
             this.footerPane.anime();
             newPartToStart = false;

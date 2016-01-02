@@ -19,6 +19,7 @@ public class Pone {
     private GameGrid grid;
     private Pane parent;
     private Sound sound = SoundFactory.getSound();
+    private Play play;
     
     private Double xPercentage;
     private Double yPercentage;
@@ -34,8 +35,9 @@ public class Pone {
     private boolean gridCleaningRequested = false;
     private int currentColumn;
     
-    public Pone(GameGrid grid,  Pane parent, Double homeXPercentage , 
+    public Pone(Play play,GameGrid grid,  Pane parent, Double homeXPercentage , 
             Double homeYPercentage) {
+        this.play = play;
         this.parent = parent;
         this.grid = grid;
         poneShape = new Ellipse();
@@ -71,7 +73,7 @@ public class Pone {
             else            goHome();
             
             e.setCursor(Cursor.HAND);
-            ((GamePane)parent).gridAddPone(currentColumn);
+            play.gridAddPone(currentColumn);
         });
         
         e.setOnMouseDragged((MouseEvent mouseEvent) -> {
