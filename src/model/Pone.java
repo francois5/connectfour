@@ -32,6 +32,7 @@ public class Pone {
     private boolean compensateCollisionEffect = false;
     private boolean stickToColumn = false;
     private boolean gridCleaningRequested = false;
+    private int currentColumn;
     
     public Pone(GameGrid grid,  Pane parent, Double homeXPercentage , 
             Double homeYPercentage) {
@@ -64,12 +65,15 @@ public class Pone {
     
     public void setDragListeners(final Shape e) {
         final Delta dragDelta = new Delta();
+        
         e.setOnMouseReleased((MouseEvent mouseEvent) -> {
             if(validMove()) enablePhysics();
             else            goHome();
             
             e.setCursor(Cursor.HAND);
+            ((GamePane)parent).gridAddPone(currentColumn);
         });
+        
         e.setOnMouseDragged((MouseEvent mouseEvent) -> {
             e.setTranslateX(e.getTranslateX() + mouseEvent.getX());
             e.setTranslateY(e.getTranslateY() + mouseEvent.getY());
@@ -108,8 +112,10 @@ public class Pone {
         for(int i = 0; i < 7; ++i) {
             double columnLocation = (gridBegin+rectifications[i]+columnWidth/2)+i*columnWidth;
             if(poneShape.getTranslateX() >= columnLocation-columnsAttractionRadius 
-                    && poneShape.getTranslateX() <= columnLocation+columnsAttractionRadius)
+                    && poneShape.getTranslateX() <= columnLocation+columnsAttractionRadius) {
+                currentColumn = i;
                 return columnLocation;
+            }
         }
         return 0;
     }

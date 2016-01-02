@@ -81,5 +81,44 @@ public class GamePane extends BorderPane {
         this.rightPoneStock.cleanGameGrid();
     }
     
+    private int[][] grid = new int[6][7];
+    // index pour la position du dernier pion dans la colonne
+    private int []numRows = new int[] {5,5,5,5,5,5,5};
+    // taille pour les tableaux internes
+    private int rowSize = 7;
+    // numéro du joueur courant
+    private int currentPlayer = 1;
+    public static int RED_PLAYER = 1;
+    public static int YELLOW_PLAYER = 2;
+    
+    public void gridAddPone(int numCol) {
+        // Si la case n'est pas vide
+        if(grid[numRows[numCol]][numCol] == 0) {
+            grid[numRows[numCol]][numCol] = currentPlayer;
+            printGrid();
+            --numRows[numCol];
+            // On passe au joueur suivant
+            nextPlayer();
+        }
+    }
+    
+    public void nextPlayer() {
+        if(currentPlayer == 1) {
+            ++currentPlayer;
+        } else if(currentPlayer == 2) {
+            --currentPlayer;
+        }
+    }
+    
+    public void printGrid() {
+        for(int i = 0; i < grid.length; ++i) {
+            for(int j = 0; j < rowSize; ++j) {
+                System.out.print("|" + grid[i][j]);
+            }
+            System.out.println("|");
+        }
+        System.out.println("---------------");
+        System.out.println("");
+    }
 
 }
