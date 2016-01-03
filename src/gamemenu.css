@@ -2,44 +2,11 @@
     -fx-background-image: url('textureBrown.jpg');
 }
 
-.label {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 0.6;
-}
-
-.label-bright {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
-}
-
-.label-header {
-    -fx-font-size: 32pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
-}
-
-.table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: -fx-focus-color;
-}
-
-.split-pane:horizontal > .split-pane-divider {
-    -fx-border-color: transparent #1d1d1d transparent #1d1d1d;
-    -fx-background-color: transparent, derive(#1d1d1d,20%);
-}
-
-.split-pane {
-    -fx-padding: 1 0 0 0;
-}
-
 .menu-bar {
     -fx-background-color: derive(#1d1d1d,20%);
 }
 
+// Contexte menu du MenuBar
 .context-menu {
     -fx-background-color: derive(#1d1d1d,50%);
 }
@@ -108,12 +75,8 @@
 .button:default:hover {
     -fx-background-color: derive(-fx-focus-color,30%);
 }
-/*
-.pone-shape {
-    -fx-fill: blue;
-     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 10,0,1,10 );
-}
-*/
+
+// Couleur des Pone 
 .right-stock {
     -fx-fill: linear-gradient(#ff1400, #be1d00);
 }
@@ -122,6 +85,20 @@
     -fx-fill: linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%);
 }
 
+// Couleur des pieds
 .leg {
     -fx-fill: linear-gradient(#022a88, #395cab);
+}
+
+// Taille et couleur des labels pour le nombre de coups
+.scorePane-lbRed {
+    -fx-font-size: 30pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: red;
+}
+
+.scorePane-lbYel {
+    -fx-font-size: 30pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: yellow;
 }

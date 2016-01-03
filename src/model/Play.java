@@ -12,8 +12,8 @@ import java.util.Observable;
  * @author seb
  */
 public class Play extends Observable {
-    public static int RED_PLAYER = 0;
-    public static int YELLOW_PLAYER = 1;
+    public static int RED_PLAYER = 1;
+    public static int YELLOW_PLAYER = 2;
     
     private int[][] grid = new int[6][7];
     // index pour la position du dernier pion dans la colonne
@@ -23,12 +23,12 @@ public class Play extends Observable {
     
     // numéro du joueur courant
     private int currentPlayer;
-    public int[] nbHit = new int[2];
-    public int[] nbWin = new int[2];
+    public int[] nbHit = new int[3];
+    public int[] nbWin = new int[3];
     
     public Play() {
         // RED_PLAYER commence
-        currentPlayer = 0;
+        currentPlayer = 1;
     }
     
     public void dataChanged() {
@@ -51,8 +51,8 @@ public class Play extends Observable {
     }
     
     public void nextPlayer() {
-        ++currentPlayer;
-        currentPlayer %= 2;
+        if(currentPlayer == 1) ++ currentPlayer;
+        else if(currentPlayer == 2) --currentPlayer;
     }
     
     public void printGrid() {

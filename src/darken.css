@@ -1,3 +1,6 @@
+// Ce style est initialisé lors de l'appel à HomeStage
+// via le menu Game
+
 .root {
     -fx-background-image : url('textureBlack.jpg');
 }
@@ -17,12 +20,7 @@
     -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Semibold";
 }
-/*
-.pone-shape {
-    -fx-fill: blue;
-     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 10,0,1,10 );
-}
-*/
+
 .right-stock {
     -fx-fill: linear-gradient(white, black);
 }
@@ -33,4 +31,16 @@
 
 .leg {
     -fx-fill: linear-gradient(gray, white);
+}
+
+.scorePane-lbRed {
+    -fx-font-size: 30pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+}
+
+.scorePane-lbYel {
+    -fx-font-size: 30pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: black;
 }
