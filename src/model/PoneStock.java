@@ -1,5 +1,6 @@
 package model;
 
+import ctrl.GameCtrl;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
@@ -18,10 +19,10 @@ public class PoneStock extends Pane {
     private ObservableList<Pone> stock;
     private GameGrid gameGrid;
     private GamePane gamePane;
-    private Play play;
+    private GameCtrl play;
     private boolean leftSide;
     
-    public PoneStock(Play play, GameGrid gameGrid, GamePane gamePane, boolean leftSide) {
+    public PoneStock(GameCtrl play, GameGrid gameGrid, GamePane gamePane, boolean leftSide) {
         this.play = play;
         this.gameGrid = gameGrid;
         this.gamePane = gamePane;
@@ -113,8 +114,10 @@ public class PoneStock extends Pane {
     }
 
     public void cleanGameGrid() {
-        for(Pone pone : stock)
+        for(Pone pone : stock) {
             pone.cleanGameGrid();
+            pone.enableForGame();
+        }
     }
     
     public boolean allPoneHome() {
@@ -123,4 +126,15 @@ public class PoneStock extends Pane {
                 return false;
         return true;
     }
+    
+    public void enable() {
+        for(Pone p : stock)
+            p.enable();
+    }
+
+    public void disable() {
+        for(Pone p : stock)
+            p.disable();
+    }
+
 }

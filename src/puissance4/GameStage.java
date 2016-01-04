@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Part;
-import model.Play;
+import ctrl.GameCtrl;
 import model.Player;
 import vue.FooterPane;
 import vue.GameMenu;
@@ -27,7 +27,7 @@ public class GameStage extends Stage {
     private final BorderPane root = new BorderPane();
     private final GamePane gamePane;
     private final GameMenu gameMenu;
-    private Play play = new Play();
+    private GameCtrl play = new GameCtrl();
     private ScorePane scorePane = new ScorePane(play);
     private final Scene scene = new Scene(root, 900, 800);
     private Part currentPart;
@@ -84,6 +84,7 @@ public class GameStage extends Stage {
             cleanGameGrid();
         }
         this.show();
+        play.newGame();
     }
 
     public void startNewPart() {
@@ -100,5 +101,12 @@ public class GameStage extends Stage {
         openGrid();
         gamePane.cleanGameGrid();
         newPartToStart = true;
+    }
+
+    public void winMessage(int currentPlayer) {
+        if(currentPlayer == 2)
+            System.out.println("red wins");
+        else
+            System.out.println("yellow wins");
     }
 }

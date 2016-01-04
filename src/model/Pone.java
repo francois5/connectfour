@@ -1,5 +1,6 @@
 package model;
 
+import ctrl.GameCtrl;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Cursor;
@@ -19,7 +20,7 @@ public class Pone {
     private GameGrid grid;
     private Pane parent;
     private Sound sound = SoundFactory.getSound();
-    private Play play;
+    private GameCtrl gameCtrl;
     
     private Double xPercentage;
     private Double yPercentage;
@@ -34,10 +35,13 @@ public class Pone {
     private boolean stickToColumn = false;
     private boolean gridCleaningRequested = false;
     private int currentColumn;
+    //private final String color;
+    private boolean enable = true; // if enable player can move the pone
+    private boolean enableForGame = true;
     
-    public Pone(Play play,GameGrid grid,  Pane parent, Double homeXPercentage , 
+    public Pone(GameCtrl play,GameGrid grid,  Pane parent, Double homeXPercentage , 
             Double homeYPercentage) {
-        this.play = play;
+        this.gameCtrl = play;
         this.parent = parent;
         this.grid = grid;
         poneShape = new Ellipse();
@@ -68,23 +72,39 @@ public class Pone {
     public void setDragListeners(final Shape e) {
         final Delta dragDelta = new Delta();
         
+        e.setOnMousePressed((MouseEvent mouseEvent) -> {
+            if(enable && enableForGame) {
+                disablePhysics();
+                dragDelta.x = e.getTranslateX() - mouseEvent.getSceneX();
+                dragDelta.y = e.getTranslateY() - mouseEvent.getSceneY();
+                e.setCursor(Cursor.NONE);
+            }
+        });
+        
         e.setOnMouseReleased((MouseEvent mouseEvent) -> {
-            if(validMove()) enablePhysics();
-            else            goHome();
-            
-            e.setCursor(Cursor.HAND);
-            play.gridAddPone(currentColumn);
+            if (enable && enableForGame) {
+                if (validMove()) {
+                    enablePhysics();
+                    gameCtrl.gridAddPone(currentColumn);
+                } else {
+                    goHome();
+                }
+
+                e.setCursor(Cursor.HAND);
+            }
         });
         
         e.setOnMouseDragged((MouseEvent mouseEvent) -> {
-            e.setTranslateX(e.getTranslateX() + mouseEvent.getX());
-            e.setTranslateY(e.getTranslateY() + mouseEvent.getY());
-            stickToColumns();
-            recalculatePercentages();
-            
-            checkBounds(e, grid.getGrid(), false);
-            checkBounds(e, ((GamePane)parent).getPones(), false);
-            this.isHome = false;
+            if (enable && enableForGame) {
+                e.setTranslateX(e.getTranslateX() + mouseEvent.getX());
+                e.setTranslateY(e.getTranslateY() + mouseEvent.getY());
+                stickToColumns();
+                recalculatePercentages();
+
+                checkBounds(e, grid.getGrid(), false);
+                checkBounds(e, ((GamePane) parent).getPones(), false);
+                this.isHome = false;
+            }
         });
     }
     
@@ -104,7 +124,17 @@ public class Pone {
             stickToColumn = false;
     }
     
+    private boolean goodHeight() {
+        if(poneShape.getTranslateY() < 
+                (parent.getHeight() - ((5d/800d)*parent.getWidth()))) {
+                return true;
+        }
+        return false;
+    }
+    
     private double locationOfStickyColumnInAttractionRange() {
+        if(!goodHeight())
+            return 0;
         double gridBegin = poneShape.radiusXProperty().get()*4;
         double gridEnd = parent.getWidth()-gridBegin;
         double columnWidth = (gridEnd-gridBegin)/7;
@@ -116,10 +146,15 @@ public class Pone {
             if(poneShape.getTranslateX() >= columnLocation-columnsAttractionRadius 
                     && poneShape.getTranslateX() <= columnLocation+columnsAttractionRadius) {
                 currentColumn = i;
-                return columnLocation;
+                if(!columnFull())
+                    return columnLocation;
             }
         }
         return 0;
+    }
+    
+    private boolean columnFull() {
+        return gameCtrl.columnFull(currentColumn);
     }
     
     // check collision
@@ -143,6 +178,7 @@ public class Pone {
         // Donc on arrete de compenser l'effet de la collision
         if (!disabled && enable){
             compensateCollisionEffect = false;
+            disableForGame();
         }
     }
     
@@ -252,6 +288,22 @@ public class Pone {
 
     boolean isHome() {
         return isHome;
+    }
+    
+    public void enable() {
+        this.enable = true;
+    }
+
+    public void disable() {
+        this.enable = false;
+    }
+    
+    public void disableForGame() {
+        this.enableForGame = false;
+    }
+    
+    public void enableForGame() {
+        this.enableForGame = true;
     }
     
     class Delta {

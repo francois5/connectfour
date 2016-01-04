@@ -5,7 +5,7 @@
  */
 package vue;
 
-import model.Play;
+import ctrl.GameCtrl;
 import java.util.Observable;
 import java.util.Observer;
 import javafx.geometry.Pos;
@@ -42,10 +42,10 @@ public class ScorePane extends FlowPane implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof Play) {
-            Play play = (Play) o;
-            lbRed.setText(play.getNbHit(Play.RED_PLAYER));
-            lbYel.setText(play.getNbHit(Play.YELLOW_PLAYER));
+        if(o instanceof GameCtrl) {
+            GameCtrl play = (GameCtrl) o;
+            lbRed.setText(play.getNbHit(GameCtrl.RED_PLAYER));
+            lbYel.setText(play.getNbHit(GameCtrl.YELLOW_PLAYER));
         }
     }
     

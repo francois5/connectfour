@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 import model.GameGrid;
 import model.Instru;
-import model.Play;
+import ctrl.GameCtrl;
 import model.Pone;
 import model.PoneStock;
 import puissance4.GameStage;
@@ -19,7 +19,7 @@ import puissance4.GameStage;
  * @author localwsp
  */
 public class GamePane extends BorderPane {
-    private Play play;
+    private GameCtrl play;
     private GameGrid gameGrid = new GameGrid(600,600, this);
     private PoneStock rightPoneStock;
     private PoneStock leftPoneStock;
@@ -27,7 +27,7 @@ public class GamePane extends BorderPane {
     
     private final Instru instru = new Instru();
     
-    public GamePane(Play play) {
+    public GamePane(GameCtrl play) {
         super();
         this.play = play;
         rightPoneStock = new PoneStock(play, gameGrid, this, false);
@@ -46,7 +46,8 @@ public class GamePane extends BorderPane {
         rightPoneStock.init(width, height);
         this.setLeft(leftPoneStock);
         leftPoneStock.init(width, height);
-
+        this.play.init(gameStage, rightPoneStock, leftPoneStock);
+        
         gameGrid.initFrontImage();
     }
     
