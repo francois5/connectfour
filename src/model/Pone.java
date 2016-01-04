@@ -68,6 +68,10 @@ public class Pone {
     public Shape getPoneShape() {
         return poneShape;
     }
+
+    public boolean isDisableForGame() {
+        return !enableForGame;
+    }
     
     public void setDragListeners(final Shape e) {
         final Delta dragDelta = new Delta();
@@ -82,16 +86,7 @@ public class Pone {
         });
         
         e.setOnMouseReleased((MouseEvent mouseEvent) -> {
-            if (enable && enableForGame) {
-                if (validMove()) {
-                    enablePhysics();
-                    gameCtrl.gridAddPone(currentColumn);
-                } else {
-                    goHome();
-                }
-
-                e.setCursor(Cursor.HAND);
-            }
+            drop(e);
         });
         
         e.setOnMouseDragged((MouseEvent mouseEvent) -> {
@@ -108,11 +103,25 @@ public class Pone {
         });
     }
     
+    private void drop(Shape shape) {
+        if (enable && enableForGame) {
+            if (validMove()) {
+                enablePhysics();
+                gameCtrl.gridAddPone(currentColumn);
+            } else {
+                goHome();
+            }
+
+            shape.setCursor(Cursor.HAND);
+        }
+    }
+    /*
     private void disableMouseListeners() {
         poneShape.setOnMouseDragged(null);
         poneShape.setOnMousePressed(null);
         poneShape.setOnMouseReleased(null);
     }
+    */
     
     private void stickToColumns() {
         double location = locationOfStickyColumnInAttractionRange();
@@ -304,6 +313,23 @@ public class Pone {
     
     public void enableForGame() {
         this.enableForGame = true;
+    }
+
+    public void autoMove(int column) {
+        poneShape.setTranslateY(40);
+        double stockWidth = (4*poneShape.getRadiusX());
+        double colWidth = (parent.getWidth()-(stockWidth*2))/7;
+        poneShape.setTranslateX(stockWidth + colWidth*column + colWidth/2);
+        
+        stickToColumns();
+        recalculatePercentages();
+        this.isHome = false;
+        this.enable = true;
+        drop(poneShape);
+    }
+
+    boolean isMoving() {
+        return (this.enableForGame == true && !this.isHome);
     }
     
     class Delta {

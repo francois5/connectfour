@@ -21,6 +21,9 @@ public class PoneStock extends Pane {
     private GamePane gamePane;
     private GameCtrl play;
     private boolean leftSide;
+    private boolean autoMoveRequested = false;
+    private int autoMoveRequestedCol;
+    private int autoMoveRequestedCountDown;
     
     public PoneStock(GameCtrl play, GameGrid gameGrid, GamePane gamePane, boolean leftSide) {
         this.play = play;
@@ -111,6 +114,8 @@ public class PoneStock extends Pane {
         for(Pone p : stock) {
             p.update();
         }
+        if(autoMoveRequested)
+            autoMove(autoMoveRequestedCol);
     }
 
     public void cleanGameGrid() {
@@ -135,6 +140,37 @@ public class PoneStock extends Pane {
     public void disable() {
         for(Pone p : stock)
             p.disable();
+    }
+    
+    public void autoMove(int column) {
+        if(!autoMoveRequested) {
+            autoMoveRequested = true;
+            autoMoveRequestedCol = column;
+            autoMoveRequestedCountDown = 100;
+        }
+        else if (autoMoveRequestedCountDown > 0) {
+            --autoMoveRequestedCountDown;
+        }
+        else {
+            autoMoveRequested = false;
+            internalAutoMove(column);
+        }
+    }
+    
+    private void internalAutoMove(int column) {
+        for(int i = 0; i < stock.size(); ++i) {
+            if(!stock.get(i).isDisableForGame()) {
+                stock.get(i).autoMove(column);
+                break;
+            }
+        }
+    }
+
+    public boolean isMoving() {
+        for(Pone p : stock)
+            if(p.isMoving())
+                return true;
+        return false;
     }
 
 }

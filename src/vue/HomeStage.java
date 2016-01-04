@@ -74,6 +74,7 @@ public class HomeStage extends Stage {
             }
             
             this.gameMenu.setGridImage("grid.png");
+            this.gameStage.setGameMode("1 player");
             this.gameStage.newGame();
             this.close();
         });

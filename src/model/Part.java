@@ -21,6 +21,14 @@ public class Part {
         players[0] = player1;
         players[1] = player2;
     }
+
+    public Player getPlayerOne() {
+        return players[1];
+    }
+    
+    public Player getPlayerTwo() {
+        return players[0];
+    }
     
     public void play() {
         int winner = -1;

@@ -34,6 +34,7 @@ public class GameStage extends Stage {
     private final FooterPane footerPane;
     private boolean newPartToStart = true;
     private VBox vBox = new VBox();
+    private String gameMode;
     
     public GameStage() {
         this.setTitle("Puissance 4 - Game");
@@ -59,6 +60,10 @@ public class GameStage extends Stage {
         
         this.setScene(scene);
         //this.show();
+    }
+
+    public void setGameMode(String gameMode) {
+        this.gameMode = gameMode;
     }
     
     public void setCenterRoot(Pane pane) {
@@ -89,7 +94,13 @@ public class GameStage extends Stage {
 
     public void startNewPart() {
         if(newPartToStart) {
-            this.currentPart = new Part(this, new Player("sebastien"), new Player("françois"));
+            if(gameMode == "2 player")
+                this.currentPart = new Part(this, new Player("sebastien", false), 
+                        new Player("françois", false));
+            else
+                this.currentPart = new Part(this, new Player("sebastien", false), 
+                        new Player("computer", true));
+            this.play.setCurrentPart(currentPart);
             this.setCenterRoot(gamePane);
             this.setBottomRoot(this.footerPane);
             this.footerPane.anime();

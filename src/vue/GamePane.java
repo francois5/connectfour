@@ -54,13 +54,17 @@ public class GamePane extends BorderPane {
     @Override
     protected void layoutChildren() { }
 
-    public void update() {
+    // return true if pones are not moving
+    public boolean update() {
         rightPoneStock.update();
         leftPoneStock.update();
         if(leftPoneStock.allPoneHome() && leftPoneStock.allPoneHome()) {
             this.closeGrid();
             gameStage.startNewPart();
         }
+        if(leftPoneStock.isMoving() || leftPoneStock.isMoving())
+            return false;
+        return true;
     }
 
     public List<Shape> getPones() {
