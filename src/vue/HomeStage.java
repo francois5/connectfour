@@ -25,8 +25,9 @@ public class HomeStage extends Stage {
     private static final int WIDTH = 270;
     private static final int HEIGHT = 180;
     private Scene scene = new Scene(vBox, WIDTH, HEIGHT);
-    private final Button[] buttons = new Button[3];
-    private static final String[] buttonNames = {"New Game", "Continue", "Quit"};
+    private final Button[] buttons = new Button[4];
+    private static final String[] buttonNames = {"Player vs Computer",
+        "Player vs Player", "Continue", "Quit"};
     private final GameStage gameStage;
     private GameMenu gameMenu;
     
@@ -64,7 +65,7 @@ public class HomeStage extends Stage {
     }
     
     private void setActionListeners() {
-        // new game
+        // Player vs Computer
         buttons[0].setOnAction(e -> {
             if(gameMenu.isDarkTheme()) {
                 this.gameMenu.gameMenuCss("/darktheme.css");
@@ -78,8 +79,22 @@ public class HomeStage extends Stage {
             this.gameStage.newGame();
             this.close();
         });
-        // continue
+        // Player vs Player
         buttons[1].setOnAction(e -> {
+            if(gameMenu.isDarkTheme()) {
+                this.gameMenu.gameMenuCss("/darktheme.css");
+            }
+            else {
+                this.gameMenu.gameMenuCss("/basictheme.css");
+            }
+            
+            this.gameMenu.setGridImage("grid.png");
+            this.gameStage.setGameMode("2 player");
+            this.gameStage.newGame();
+            this.close();
+        });
+        // continue
+        buttons[2].setOnAction(e -> {
             if(gameMenu.isDarkTheme()) {
                 this.gameMenu.gameMenuCss("/darktheme.css");
             }
@@ -91,7 +106,7 @@ public class HomeStage extends Stage {
             this.close();
         });
         // exit
-        buttons[2].setOnAction(e -> {
+        buttons[3].setOnAction(e -> {
             Platform.exit();
         });
     }
