@@ -97,7 +97,7 @@ public class Pone {
                 recalculatePercentages();
 
                 checkBounds(e, grid.getGrid(), false);
-                checkBounds(e, ((GamePane) parent).getPones(), false);
+                checkBoundsWithPones(e, ((GamePane) parent).getPones(), false);
                 this.isHome = false;
             }
         });
@@ -191,6 +191,23 @@ public class Pone {
         }
     }
     
+    private void checkBoundsWithPones(Shape e, List<Pone> pones, boolean enable) {
+        boolean disabled = false;
+        for (Pone p : pones) {
+            if (p.getPoneShape() != e && p.isDisableForGame()) {
+                Shape path = Path.intersect(e, p.getPoneShape());
+                if (!path.getBoundsInParent().isEmpty()) {
+                    disablePhysics();
+                    disabled = true;
+                }
+            }
+        }
+        if (!disabled && enable){
+            compensateCollisionEffect = false;
+            disableForGame();
+        }
+    }
+    
     public void notifySceneWidth(Double oldSceneWidth, Double newSceneWidth) {
         poneShape.setTranslateX(newSceneWidth*xPercentage);
     }
@@ -224,7 +241,7 @@ public class Pone {
         recalculatePercentages();
         checkBounds(this.poneShape, this.grid.getGrid(), false);
         if(hitOtherPones)
-            checkBounds(this.poneShape, ((GamePane) parent).getPones(), false);
+            checkBoundsWithPones(this.poneShape, ((GamePane) parent).getPones(), false);
         if (!physicsEnable) {
             playCollisionSound();
             compensateCollisionEffect = true;
@@ -234,7 +251,7 @@ public class Pone {
     private void compensateCollisionEffect() {
         this.poneShape.setTranslateY(this.poneShape.getTranslateY() - 1);
         ArrayList<Shape> concatPoneGrid = new ArrayList<Shape>(this.grid.getGrid());
-        concatPoneGrid.addAll(((GamePane) parent).getPones());
+        concatPoneGrid.addAll(((GamePane) parent).getPoneShapes());
         checkBounds(this.poneShape, concatPoneGrid, true);
     }
 

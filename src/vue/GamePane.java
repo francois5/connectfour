@@ -2,10 +2,7 @@ package vue;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 import model.GameGrid;
 import model.Instru;
@@ -67,10 +64,17 @@ public class GamePane extends BorderPane {
         return true;
     }
 
-    public List<Shape> getPones() {
+    public List<Shape> getPoneShapes() {
         List<Shape> l = new ArrayList<Shape>();
         l.addAll(rightPoneStock.getPoneShapes());
         l.addAll(leftPoneStock.getPoneShapes());
+        return l;
+    }
+    
+    public List<Pone> getPones() {
+        List<Pone> l = new ArrayList<Pone>();
+        l.addAll(rightPoneStock.getPones());
+        l.addAll(leftPoneStock.getPones());
         return l;
     }
 

@@ -61,7 +61,7 @@ public class GameCtrl extends Observable {
         if(!legalMove(numCol))
             return false;
         grid[numRows[numCol]][numCol] = currentPlayer;
-        printGrid();
+        //printGrid();
         --numRows[numCol];
         // On incrémente le nombre de coups du joueur courant
         ++nbHit[currentPlayer];
