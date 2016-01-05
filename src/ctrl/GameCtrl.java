@@ -213,7 +213,7 @@ public class GameCtrl extends Observable {
             leftPoneStock.disable();
             if(currentPart.getPlayerOne().isComputer()) {
                 rightPoneStock.disable();
-                ai.play("yellow", rightPoneStock);
+                ai.play(YELLOW_PLAYER, rightPoneStock, grid);
             }
             else
                 rightPoneStock.enable();
@@ -223,14 +223,14 @@ public class GameCtrl extends Observable {
             rightPoneStock.disable();
             if(currentPart.getPlayerTwo().isComputer()) {
                 leftPoneStock.disable();
-                ai.play("red", leftPoneStock);
+                ai.play(RED_PLAYER, leftPoneStock, grid);
             }
             else
                 leftPoneStock.enable();
         }
     }
     
-    public void printGrid() {
+    public void printGrid(int[][] grid) {
         for(int i = 0; i < grid.length; ++i) {
             for(int j = 0; j < rowSize; ++j) {
                 System.out.print("|" + grid[i][j]);
