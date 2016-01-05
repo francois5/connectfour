@@ -146,7 +146,7 @@ public class PoneStock extends Pane {
         if(!autoMoveRequested) {
             autoMoveRequested = true;
             autoMoveRequestedCol = column;
-            autoMoveRequestedCountDown = 100;
+            autoMoveRequestedCountDown = 50;
         }
         else if (autoMoveRequestedCountDown > 0) {
             --autoMoveRequestedCountDown;

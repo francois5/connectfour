@@ -1,10 +1,12 @@
 package vue;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import model.GameGrid;
@@ -18,11 +20,12 @@ import puissance4.GameStage;
  */
 public class GameMenu extends Pane {
     private final MenuBar menuBar;
+    private final Label gameMenuLabel;
     private final Menu gameMenu;
     private final Menu soundMenu;
     private final Menu styleMenu;
-    private final MenuItem game;
-    private final MenuItem exit;
+    //private final MenuItem game;
+    //private final MenuItem exit;
     private final MenuItem basicTheme;
     private final MenuItem darkTheme;
     private final CheckMenuItem on;
@@ -45,7 +48,10 @@ public class GameMenu extends Pane {
         menuBar.prefWidthProperty().bind(scene.widthProperty());
         
         // menus
-        gameMenu = new Menu("Menu");
+        this.gameMenuLabel = new Label("Menu");
+        gameMenu = new Menu();
+        gameMenu.setGraphic(gameMenuLabel);
+        //gameMenu.setO
         soundMenu = new Menu("Sound");
         //difficulty = new Menu("Difficulty");
         styleMenu = new Menu("Appearance");
@@ -59,15 +65,15 @@ public class GameMenu extends Pane {
         super.getChildren().add(menuBar);
         
         // création des menu items
-        game = new MenuItem("Game");
-        exit = new MenuItem("Exit");
+        //game = new MenuItem("Game");
+        //exit = new MenuItem("Exit");
         basicTheme = new MenuItem("Basic");
         darkTheme = new MenuItem("Dark");
         
         on = new CheckMenuItem("On");
         on.setSelected(true);
         
-        gameMenu.getItems().addAll(game, new SeparatorMenuItem(), exit);
+        //gameMenu.getItems().addAll(game, new SeparatorMenuItem(), exit);
         
         soundMenu.getItems().addAll(on);
         styleMenu.getItems().addAll(darkTheme, basicTheme);
@@ -85,9 +91,9 @@ public class GameMenu extends Pane {
     }
     
     private void addKeyListeners() {
-        exit.setOnAction(e -> {
+        /*exit.setOnAction(e -> {
             Platform.exit();
-        });
+        });*/
         
         basicTheme.setOnAction(e -> {
             gameMenuCss("/basictheme.css");
@@ -107,17 +113,24 @@ public class GameMenu extends Pane {
             }
         });
         
-        game.setOnAction(e -> {
-            this.homeStage = new HomeStage(gameStage, this);
-            // 2 étapes pour bloquer les autres fenêtre
-            // 1 : initOwner () reçoit la fenêtre à bloquer
-            homeStage.initOwner(gameStage);
-            // 2 : initModality à WINDOW_MODAL
-            homeStage.initModality(Modality.WINDOW_MODAL);
-            
-            darken();
-            homeStage.display();
+        this.gameMenuLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayMainMenu();
+            }
         });
+    }
+    
+    public void displayMainMenu() {
+        this.homeStage = new HomeStage(gameStage, this);
+        // 2 étapes pour bloquer les autres fenêtre
+        // 1 : initOwner () reçoit la fenêtre à bloquer
+        homeStage.initOwner(gameStage);
+        // 2 : initModality à WINDOW_MODAL
+        homeStage.initModality(Modality.WINDOW_MODAL);
+
+        darken();
+        homeStage.display();
     }
     
     public void gameMenuCss(String theme) {

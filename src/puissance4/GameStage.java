@@ -59,7 +59,8 @@ public class GameStage extends Stage {
         this.getIcons().add(new Image("icon.png"));
         
         this.setScene(scene);
-        //this.show();
+        this.show();
+        gameMenu.displayMainMenu();
     }
 
     public void setGameMode(String gameMode) {
