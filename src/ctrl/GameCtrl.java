@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ctrl;
 
-import java.util.List;
 import java.util.Observable;
 import model.Part;
 import model.PoneStock;
@@ -130,27 +124,25 @@ public class GameCtrl extends Observable {
     }
     
     private boolean checkWinDiagonal() {
-        return (checkWinDiagonalRight() || checkWinDiagonalLeft());
+        return (checkWinDiagonalLeft() || checkWinDiagonalRight() );
     }
     
-    private boolean checkWinDiagonalRight() {
+    private boolean checkWinDiagonalLeft() {
         for (int i = 0; i < 2; ++i) {
-            int countSameColor = 0;
-            int curColor = 0;
-            int precColor = 0;
-            for (int co = 0; co < grid[0].length; ++co) {
-                countSameColor = 0;
-                precColor = 0;
-                for (int li = grid.length-1; li >= 0 ; --li) {
+            for (int li = 0; li < grid.length ; ++li) {
+                int curColor = 0;
+                int countSameColor = 0;
+                int precColor = 0;
+                for (int co = 0; co < grid[0].length; ++co) {
                     if(i == 0) {
-                        if((co + li) < grid[0].length)
-                            curColor = grid[li][co + li];
+                        if((li + co) < grid.length)
+                            curColor = grid[li + co][co];
                         else
                             curColor = 0;
                     }
                     else {
-                        if((co - li) >= 0)
-                            curColor = grid[li][co - li];
+                        if((li - co) >= 0)
+                            curColor = grid[li - co][co];
                         else
                             curColor = 0;
                     }
@@ -171,24 +163,26 @@ public class GameCtrl extends Observable {
         return false;
     }
     
-    private boolean checkWinDiagonalLeft() {
+    private int invertSeven(int n) {
+        return Math.abs(n-6);
+    }
+    
+    private boolean checkWinDiagonalRight() {
         for (int i = 0; i < 2; ++i) {
-            int countSameColor = 0;
-            int curColor = 0;
-            int precColor = 0;
-            for (int co = 0; co < grid[0].length; ++co) {
-                countSameColor = 0;
-                precColor = 0;
-                for (int li = 0; li < grid.length; ++li) {
+            for (int li = 0; li < grid.length ; ++li) {
+                int curColor = 0;
+                int countSameColor = 0;
+                int precColor = 0;
+                for (int co = grid[0].length-1; co >= 0 ; --co) {
                     if(i == 0) {
-                        if((co + li) < grid[0].length)
-                            curColor = grid[li][co + li];
+                        if((li + invertSeven(co)) < grid.length)
+                            curColor = grid[li + invertSeven(co)][co];
                         else
                             curColor = 0;
                     }
                     else {
-                        if((co - li) >= 0)
-                            curColor = grid[li][co - li];
+                        if((li - invertSeven(co)) >= 0)
+                            curColor = grid[li - invertSeven(co)][co];
                         else
                             curColor = 0;
                     }
