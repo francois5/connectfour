@@ -13,6 +13,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Part;
 import ctrl.GameCtrl;
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.stage.Popup;
+import javafx.stage.WindowEvent;
 import model.Player;
 import vue.FooterPane;
 import vue.GameMenu;
@@ -117,15 +123,54 @@ public class GameStage extends Stage {
 
     public void winMessage(int currentPlayer) {
         if(currentPlayer == 2) {
-            System.out.println("red wins");
+            //System.out.println("red wins");
+            showPopupMessage("Red wins", this, "red");
         }
         else {
-            System.out.println("yellow wins");
+            //System.out.println("yellow wins");
+            showPopupMessage("Yellow wins", this, "yellow");
         }
     }
 
     public void drawMessage() {
-        System.out.println("draw");
+        showPopupMessage("Draw", this, "draw");
+        //System.out.println("draw");
+    }
+    
+    public Popup createPopup(final String message, final String color) {
+        final Popup popup = new Popup();
+        popup.setAutoFix(true);
+        popup.setAutoHide(true);
+        popup.setHideOnEscape(true);
+        Label label = new Label(message);
+        label.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                popup.hide();
+                //gameMenu.displayMainMenu();
+            }
+        });
+        if(color.equals("draw"))
+            label.setTextFill(Color.WHITE);
+        else if(color.equals("red"))
+            label.setTextFill(Color.RED);
+        else if(color.equals("yellow"))
+            label.setTextFill(Color.YELLOW);
+        label.getStylesheets().add("/popup.css");
+        label.getStyleClass().add("popup");
+        popup.getContent().add(label);
+        return popup;
     }
 
+    public void showPopupMessage(final String message, final Stage stage, final String color) {
+        final Popup popup = createPopup(message, color);
+        popup.setOnShown(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                popup.setX(stage.getX() + stage.getWidth() / 2 - popup.getWidth() / 2);
+                popup.setY(stage.getY() + stage.getHeight() / 2 - popup.getHeight() / 2);
+            }
+        });
+        popup.show(stage);
+    }
 }
