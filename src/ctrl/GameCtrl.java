@@ -59,9 +59,12 @@ public class GameCtrl extends Observable {
         --numRows[numCol];
         // On incrémente le nombre de coups du joueur courant
         ++nbHit[currentPlayer];
+        
+        // On notifie les observers
+        dataChanged();
         // On passe au joueur suivant
         nextPlayer();
-        dataChanged();
+        
         checkWin();
         return true;
     }
@@ -270,5 +273,5 @@ public class GameCtrl extends Observable {
         cleanGrid();
         dataChanged();
     }
-
+    
 }

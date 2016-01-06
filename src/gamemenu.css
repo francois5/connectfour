@@ -102,3 +102,9 @@
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: yellow;
 }
+
+.scorePane-lbPlayer {
+    -fx-font-size: 30pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: linear-gradient(orange, yellow);
+}

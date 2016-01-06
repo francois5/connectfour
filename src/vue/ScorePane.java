@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import model.AnimLabel;
 
 /**
  *
@@ -26,15 +27,14 @@ public class ScorePane extends FlowPane implements Observer{
     private Observable observable;
     private Image image = new Image("/author.png");
     private ImageView imageView = new ImageView(image);
-    private Label lbRed = new Label("Red");
-    private Label lbYel= new Label("Yel");
+    private AnimLabel lbRed = new AnimLabel("Red");
+    private AnimLabel lbYel= new AnimLabel("Yel");
     
     public ScorePane(Observable observable) {
         observable.addObserver(this);
         this.observable = observable;
-        this.getChildren().add(lbRed);
-        this.getChildren().add(imageView);
-        this.getChildren().add(lbYel);
+        
+        addLabels();
         colorLabels();
         center();
         colorBackground();
@@ -44,9 +44,23 @@ public class ScorePane extends FlowPane implements Observer{
     public void update(Observable o, Object arg) {
         if(o instanceof GameCtrl) {
             GameCtrl play = (GameCtrl) o;
-            lbRed.setText(play.getNbHit(GameCtrl.RED_PLAYER));
-            lbYel.setText(play.getNbHit(GameCtrl.YELLOW_PLAYER));
+            
+            if(play.getCurrentPlayer()== 1) {
+                lbRed.setText(play.getNbHit(GameCtrl.RED_PLAYER));
+                lbRed.getBlinkThenFade().play();
+            }
+            else if(play.getCurrentPlayer()== 2) {
+                lbYel.setText(play.getNbHit(GameCtrl.YELLOW_PLAYER));
+                lbYel.getBlinkThenFade().play();
+            }
         }
+    }
+    
+    private void addLabels() {
+        this.getChildren().add(lbRed);
+        this.getChildren().add(imageView);
+        this.getChildren().add(lbYel);
+        
     }
     
     public void colorLabels() {
