@@ -7,13 +7,14 @@
 package vue;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import puissance4.GameStage;
 
 /**
@@ -47,6 +48,13 @@ public class HomeStage extends Stage {
     public void display() {
         this.setTitle("Home");
         this.setScene(scene);
+        this.setOnShown(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                setX(gameStage.getX() + gameStage.getWidth() / 2 - getWidth() / 2);
+                setY(gameStage.getY() + gameStage.getHeight() / 2 - getHeight() / 2);
+            }
+        });
         this.show();
     }
     

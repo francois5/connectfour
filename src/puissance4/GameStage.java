@@ -122,32 +122,26 @@ public class GameStage extends Stage {
     }
 
     public void winMessage(int currentPlayer) {
-        if(currentPlayer == 2) {
-            //System.out.println("red wins");
+        if(currentPlayer == 2)
             showPopupMessage("Red wins", this, "red");
-        }
-        else {
-            //System.out.println("yellow wins");
+        else
             showPopupMessage("Yellow wins", this, "yellow");
-        }
     }
 
     public void drawMessage() {
         showPopupMessage("Draw", this, "draw");
-        //System.out.println("draw");
     }
     
     public Popup createPopup(final String message, final String color) {
         final Popup popup = new Popup();
         popup.setAutoFix(true);
-        popup.setAutoHide(true);
         popup.setHideOnEscape(true);
         Label label = new Label(message);
         label.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 popup.hide();
-                //gameMenu.displayMainMenu();
+                gameMenu.displayMainMenu();
             }
         });
         if(color.equals("draw"))
