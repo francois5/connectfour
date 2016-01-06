@@ -24,7 +24,7 @@ import javafx.scene.layout.FlowPane;
 // GamePane, GameGrid, Pone et PoneStock !
 public class ScorePane extends FlowPane implements Observer{
     private Observable observable;
-    private Image image = new Image("author.png");
+    private Image image = new Image("/author.png");
     private ImageView imageView = new ImageView(image);
     private Label lbRed = new Label("Red");
     private Label lbYel= new Label("Yel");
