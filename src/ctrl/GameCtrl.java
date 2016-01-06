@@ -97,7 +97,6 @@ public class GameCtrl extends Observable {
             if(currentPart.getPlayerOne().isComputer()) {
                 rightPoneStock.disable();
                 computerTurn = true;
-                //ai.play(YELLOW_PLAYER, rightPoneStock, gameGrid.getGrid());
             }
             else {
                 rightPoneStock.enable();
@@ -110,7 +109,6 @@ public class GameCtrl extends Observable {
             if(currentPart.getPlayerTwo().isComputer()) {
                 leftPoneStock.disable();
                 computerTurn = true;
-                //ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid());
             }
             else {
                 leftPoneStock.enable();

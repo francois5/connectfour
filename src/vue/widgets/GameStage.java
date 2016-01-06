@@ -128,6 +128,7 @@ public class GameStage extends Stage {
         final Popup popup = new Popup();
         popup.setAutoFix(true);
         popup.setHideOnEscape(true);
+        popup.opacityProperty().set(0.8);
         Label label = new Label(message);
         label.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
