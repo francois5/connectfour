@@ -15,21 +15,25 @@ public class AI {
         this.gameCtrl = gameCtrl;
     }
     
-    public void play(int player, PoneStock poneStock, int[][] grid) {
-        int maxVal = getVal(player, true, 0, grid, 0);
-        int maxValCo = 0;
+    public boolean play(int player, PoneStock poneStock, int[][] grid) {
+        Integer maxVal = null;
+        Integer maxValCo = null;
         //System.out.println("co: "+0+" val: "+maxVal);
-        for(int co = 1; co < 7; ++co) {
+        for(int co = 0; co < 7; ++co) {
             if(gameCtrl.legalMove(co)) {
                 int val = getVal(player, true, co, grid, 0);
                 //System.out.println("co: "+co+" val: "+val);
-                if(val > maxVal) {
+                if(maxVal == null || val > maxVal) {
                     maxVal = val;
                     maxValCo = co;
                 }
             }
         }
-        poneStock.autoMove(maxValCo);
+        if(maxValCo != null) {
+            poneStock.autoMove(maxValCo);
+            return true;
+        }
+        return false;
     }
     
     private int getVal(int player, boolean turn, int column, int[][] grid, int depth) {
