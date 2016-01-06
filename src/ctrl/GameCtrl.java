@@ -65,7 +65,10 @@ public class GameCtrl extends Observable {
         // On passe au joueur suivant
         nextPlayer();
         
-        checkWin();
+        if(checkWin())
+            gameStage.winMessage(currentPlayer);
+        if(checkDraw())
+            gameStage.drawMessage();
         return true;
     }
     
@@ -74,10 +77,8 @@ public class GameCtrl extends Observable {
               numCol >= grid[numRows[numCol]].length || grid[numRows[numCol]][numCol] != 0);
     }
     
-    private void checkWin() {
-        if(checkWinColumn() || checkWinLine() || checkWinDiagonal()) {
-            gameStage.winMessage(currentPlayer);
-        }
+    private boolean checkWin() {
+        return(checkWinColumn() || checkWinLine() || checkWinDiagonal());
     }
     
     private boolean checkWinLine() {
@@ -272,6 +273,13 @@ public class GameCtrl extends Observable {
         numRows = new int[] {5,5,5,5,5,5,5};
         cleanGrid();
         dataChanged();
+    }
+
+    private boolean checkDraw() {
+        for(int co = 0; co < 7; ++co)
+            if(grid[0][co] == 0)
+                return false;
+        return true;
     }
     
 }

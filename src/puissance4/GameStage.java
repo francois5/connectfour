@@ -116,9 +116,16 @@ public class GameStage extends Stage {
     }
 
     public void winMessage(int currentPlayer) {
-        if(currentPlayer == 2)
+        if(currentPlayer == 2) {
             System.out.println("red wins");
-        else
+        }
+        else {
             System.out.println("yellow wins");
+        }
     }
+
+    public void drawMessage() {
+        System.out.println("draw");
+    }
+
 }
