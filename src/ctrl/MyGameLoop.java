@@ -1,7 +1,7 @@
-package puissance4;
+package ctrl;
 
 import javafx.animation.AnimationTimer;
-import vue.GamePane;
+import vue.widgets.GamePane;
 
 /**
  *
@@ -11,7 +11,7 @@ public class MyGameLoop extends AnimationTimer {
     
     private GamePane gamePane;
 
-    MyGameLoop(GamePane gamePane) {
+    public MyGameLoop(GamePane gamePane) {
         this.gamePane = gamePane;
     }
 

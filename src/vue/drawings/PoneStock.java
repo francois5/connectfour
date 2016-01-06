@@ -1,15 +1,14 @@
-package model;
+package vue.drawings;
 
 import ctrl.GameCtrl;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
-import vue.GamePane;
+import vue.widgets.GamePane;
 
 /**
  *

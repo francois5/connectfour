@@ -1,4 +1,4 @@
-package vue;
+package vue.widgets;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -8,10 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
-import model.GameGrid;
-import model.Sound;
-import model.SoundFactory;
-import puissance4.GameStage;
+import vue.drawings.GameGrid;
+import ctrl.Sound;
+import ctrl.SoundFactory;
 
 /**
  *

@@ -1,5 +1,7 @@
-package model;
+package vue.drawings;
 
+import ctrl.SoundFactory;
+import ctrl.Sound;
 import ctrl.GameCtrl;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
-import vue.GamePane;
+import vue.widgets.GamePane;
 
 /**
  *

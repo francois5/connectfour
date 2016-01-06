@@ -1,5 +1,6 @@
 package puissance4;
 
+import vue.widgets.GameStage;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;

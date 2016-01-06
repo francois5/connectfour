@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package puissance4;
+package vue.widgets;
 
+import ctrl.MyGameLoop;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -20,10 +16,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.WindowEvent;
 import model.Player;
-import vue.FooterPane;
-import vue.GameMenu;
-import vue.GamePane;
-import vue.ScorePane;
 
 /**
  *

@@ -2,8 +2,9 @@ package ctrl;
 
 import java.util.Observable;
 import model.Part;
-import model.PoneStock;
-import puissance4.GameStage;
+import model.GameGrid;
+import vue.drawings.PoneStock;
+import vue.widgets.GameStage;
 
 /**
  *
@@ -18,11 +19,7 @@ public class GameCtrl extends Observable {
     private Part currentPart; 
     private AI ai;
     
-    private int[][] grid = new int[6][7];
-    // index pour la position du dernier pion dans la colonne
-    private int []numRows = new int[] {5,5,5,5,5,5,5};
-    // taille pour les tableaux internes
-    private int rowSize = 7;
+    private GameGrid gameGrid = new GameGrid();
     
     // numéro du joueur courant
     private int currentPlayer;
@@ -54,9 +51,9 @@ public class GameCtrl extends Observable {
         // Si la case n'est pas vide
         if(!legalMove(numCol))
             return false;
-        grid[numRows[numCol]][numCol] = currentPlayer;
+        gameGrid.getGrid()[gameGrid.getNumRows()[numCol]][numCol] = currentPlayer;
         //printGrid();
-        --numRows[numCol];
+        --gameGrid.getNumRows()[numCol];
         // On incrémente le nombre de coups du joueur courant
         ++nbHit[currentPlayer];
         
@@ -65,150 +62,19 @@ public class GameCtrl extends Observable {
         // On passe au joueur suivant
         nextPlayer();
         
-        if(checkWin())
+        if(ai.win(gameGrid.getGrid()))
             gameStage.winMessage(currentPlayer);
         if(checkDraw())
             gameStage.drawMessage();
         return true;
     }
     
-    public boolean legalMove(int numCol) {
-        return !(numCol >= numRows.length || numRows[numCol] >= grid.length || numRows[numCol] < 0 ||
-              numCol >= grid[numRows[numCol]].length || grid[numRows[numCol]][numCol] != 0);
-    }
-    
-    private boolean checkWin() {
-        return(checkWinColumn() || checkWinLine() || checkWinDiagonal());
-    }
-    
-    private boolean checkWinLine() {
-        int countSameColor = 0;
-        int curColor = 0;
-        int precColor = 0;
-        for(int li = 0; li < grid.length; ++li) {
-            countSameColor = 0;
-            precColor = 0;
-            for(int co = 0; co < grid[0].length; ++co) {
-                curColor = grid[li][co];
-                if(curColor != 0) {
-                    if(curColor == precColor)
-                        ++countSameColor;
-                    else
-                        countSameColor = 0;
-                    if(countSameColor == 3)
-                        return true;
-                }
-                precColor = curColor;
-            }
-        }
-        return false;
-    }
-    
-    private boolean checkWinColumn() {
-        int countSameColor = 0;
-        int curColor = 0;
-        int precColor = 0;
-        for(int co = 0; co < grid[0].length; ++co) {
-            countSameColor = 0;
-            precColor = 0;
-            for(int li = 0; li < grid.length; ++li) {
-                curColor = grid[li][co];
-                if(curColor != 0) {
-                    if(curColor == precColor)
-                        ++countSameColor;
-                    else
-                        countSameColor = 0;
-                    if(countSameColor == 3)
-                        return true;
-                }
-                precColor = curColor;
-            }
-        }
-        return false;
-    }
-    
-    private boolean checkWinDiagonal() {
-        return (checkWinDiagonalLeft() || checkWinDiagonalRight() );
-    }
-    
-    private boolean checkWinDiagonalLeft() {
-        for (int i = 0; i < 2; ++i) {
-            for (int li = 0; li < grid.length ; ++li) {
-                int curColor = 0;
-                int countSameColor = 0;
-                int precColor = 0;
-                for (int co = 0; co < grid[0].length; ++co) {
-                    if(i == 0) {
-                        if((li + co) < grid.length)
-                            curColor = grid[li + co][co];
-                        else
-                            curColor = 0;
-                    }
-                    else {
-                        if((li - co) >= 0)
-                            curColor = grid[li - co][co];
-                        else
-                            curColor = 0;
-                    }
-                    if (curColor != 0) {
-                        if (curColor == precColor) {
-                            ++countSameColor;
-                        } else {
-                            countSameColor = 0;
-                        }
-                        if (countSameColor == 3) {
-                            return true;
-                        }
-                    }
-                    precColor = curColor;
-                }
-            }
-        }
-        return false;
-    }
-    
-    private int invertSeven(int n) {
-        return Math.abs(n-6);
-    }
-    
-    private boolean checkWinDiagonalRight() {
-        for (int i = 0; i < 2; ++i) {
-            for (int li = 0; li < grid.length ; ++li) {
-                int curColor = 0;
-                int countSameColor = 0;
-                int precColor = 0;
-                for (int co = grid[0].length-1; co >= 0 ; --co) {
-                    if(i == 0) {
-                        if((li + invertSeven(co)) < grid.length)
-                            curColor = grid[li + invertSeven(co)][co];
-                        else
-                            curColor = 0;
-                    }
-                    else {
-                        if((li - invertSeven(co)) >= 0)
-                            curColor = grid[li - invertSeven(co)][co];
-                        else
-                            curColor = 0;
-                    }
-                    if (curColor != 0) {
-                        if (curColor == precColor) {
-                            ++countSameColor;
-                        } else {
-                            countSameColor = 0;
-                        }
-                        if (countSameColor == 3) {
-                            return true;
-                        }
-                    }
-                    precColor = curColor;
-                }
-            }
-        }
-        return false;
+    public boolean legalMove(int co) {
+        return ai.legalMove(co, gameGrid.getGrid());
     }
     
     public boolean columnFull(int co) {
-        return numRows[co] == -1;
+        return gameGrid.getNumRows()[co] == -1;
     }
     
     public void nextPlayer() {
@@ -217,7 +83,7 @@ public class GameCtrl extends Observable {
             leftPoneStock.disable();
             if(currentPart.getPlayerOne().isComputer()) {
                 rightPoneStock.disable();
-                ai.play(YELLOW_PLAYER, rightPoneStock, grid);
+                ai.play(YELLOW_PLAYER, rightPoneStock, gameGrid.getGrid());
             }
             else
                 rightPoneStock.enable();
@@ -227,7 +93,7 @@ public class GameCtrl extends Observable {
             rightPoneStock.disable();
             if(currentPart.getPlayerTwo().isComputer()) {
                 leftPoneStock.disable();
-                ai.play(RED_PLAYER, leftPoneStock, grid);
+                ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid());
             }
             else
                 leftPoneStock.enable();
@@ -236,7 +102,7 @@ public class GameCtrl extends Observable {
     
     public void printGrid(int[][] grid) {
         for(int i = 0; i < grid.length; ++i) {
-            for(int j = 0; j < rowSize; ++j) {
+            for(int j = 0; j < grid[0].length; ++j) {
                 System.out.print("|" + grid[i][j]);
             }
             System.out.println("|");
@@ -258,9 +124,9 @@ public class GameCtrl extends Observable {
     }
     
     private void cleanGrid() {
-        for(int i = 0; i < grid.length; ++i) {
-            for(int y = 0; y < grid[0].length; ++y)
-                grid[i][y] = 0;
+        for(int i = 0; i < 6; ++i) {
+            for(int y = 0; y < 7; ++y)
+                gameGrid.getGrid()[i][y] = 0;
         }
     }
 
@@ -270,14 +136,14 @@ public class GameCtrl extends Observable {
         leftPoneStock.enable();
         nbHit[1] = 0;
         nbHit[2] = 0;
-        numRows = new int[] {5,5,5,5,5,5,5};
+        gameGrid.setNumRows(new int[] {5,5,5,5,5,5,5});
         cleanGrid();
         dataChanged();
     }
 
     private boolean checkDraw() {
         for(int co = 0; co < 7; ++co)
-            if(grid[0][co] == 0)
+            if(gameGrid.getGrid()[0][co] == 0)
                 return false;
         return true;
     }

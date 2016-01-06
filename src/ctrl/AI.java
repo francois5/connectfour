@@ -1,6 +1,6 @@
 package ctrl;
 
-import model.PoneStock;
+import vue.drawings.PoneStock;
 
 /**
  *
@@ -58,13 +58,13 @@ public class AI {
         return val / (depth*10+1);
     }
     
-    private boolean win(int[][] grid) {
+    public boolean win(int[][] grid) {
         return (winColumn(grid) 
                 || winLine(grid) 
                 || winDiagonal(grid));
     }
     
-    private boolean legalMove(int column, int[][] grid) {
+    public boolean legalMove(int column, int[][] grid) {
         return grid[0][column] == 0;
     }
     

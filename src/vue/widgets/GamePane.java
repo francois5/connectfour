@@ -1,15 +1,14 @@
-package vue;
+package vue.widgets;
 
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Shape;
-import model.GameGrid;
-import model.Instru;
+import vue.drawings.GameGrid;
+import model.sounds.Instru;
 import ctrl.GameCtrl;
-import model.Pone;
-import model.PoneStock;
-import puissance4.GameStage;
+import vue.drawings.Pone;
+import vue.drawings.PoneStock;
 
 /**
  *
