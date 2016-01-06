@@ -15,9 +15,11 @@ public class GameCtrl extends Observable {
     public static int YELLOW_PLAYER = 2;
     private PoneStock rightPoneStock; 
     private PoneStock leftPoneStock;
-    private GameStage gameStage;
-    private Part currentPart; 
+    private GameStage gameStage; 
+    private Part currentPart;
     private AI ai;
+    private boolean gameEnd = false;
+    private boolean computerTurn = false;
     
     private GameGrid gameGrid = new GameGrid();
     
@@ -49,7 +51,7 @@ public class GameCtrl extends Observable {
     
     public boolean gridAddPone(int numCol) {
         // Si la case n'est pas vide
-        if(!legalMove(numCol))
+        if(!legalMove(numCol) || gameEnd)
             return false;
         gameGrid.getGrid()[gameGrid.getNumRows()[numCol]][numCol] = currentPlayer;
         //printGrid();
@@ -62,10 +64,21 @@ public class GameCtrl extends Observable {
         // On passe au joueur suivant
         nextPlayer();
         
-        if(ai.win(gameGrid.getGrid()))
+        if(ai.win(gameGrid.getGrid())) {
             gameStage.winMessage(currentPlayer);
-        if(checkDraw())
+            gameEnd = true;
+        }
+        else if(checkDraw()) {
             gameStage.drawMessage();
+            gameEnd = true;
+        }
+        if(computerTurn) {
+            if(currentPlayer == 1)
+                ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid());
+            else
+                ai.play(YELLOW_PLAYER, rightPoneStock, gameGrid.getGrid());
+        }
+            
         return true;
     }
     
@@ -79,24 +92,30 @@ public class GameCtrl extends Observable {
     
     public void nextPlayer() {
         if(currentPlayer == 1) {
-            ++ currentPlayer;
+            currentPlayer = 2;
             leftPoneStock.disable();
             if(currentPart.getPlayerOne().isComputer()) {
                 rightPoneStock.disable();
-                ai.play(YELLOW_PLAYER, rightPoneStock, gameGrid.getGrid());
+                computerTurn = true;
+                //ai.play(YELLOW_PLAYER, rightPoneStock, gameGrid.getGrid());
             }
-            else
+            else {
                 rightPoneStock.enable();
+                computerTurn = false;
+            }
         }
         else if(currentPlayer == 2) {
-            --currentPlayer;
+            currentPlayer = 1;
             rightPoneStock.disable();
             if(currentPart.getPlayerTwo().isComputer()) {
                 leftPoneStock.disable();
-                ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid());
+                computerTurn = true;
+                //ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid());
             }
-            else
+            else {
                 leftPoneStock.enable();
+                computerTurn = false;
+            }
         }
     }
     
@@ -132,6 +151,7 @@ public class GameCtrl extends Observable {
 
     public void newGame() {
         currentPlayer = 1;
+        gameEnd = false;
         rightPoneStock.disable();
         leftPoneStock.enable();
         nbHit[1] = 0;
