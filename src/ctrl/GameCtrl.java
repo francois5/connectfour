@@ -72,7 +72,7 @@ public class GameCtrl extends Observable {
             gameStage.drawMessage();
             gameEnd = true;
         }
-        if(computerTurn) {
+        if(computerTurn && !gameEnd) {
             if(currentPlayer == 1)
                 ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid());
             else
