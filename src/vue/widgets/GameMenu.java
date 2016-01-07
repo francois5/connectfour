@@ -11,6 +11,7 @@ import javafx.stage.Modality;
 import vue.drawings.GameGrid;
 import ctrl.Sound;
 import ctrl.SoundFactory;
+import javafx.application.Platform;
 
 /**
  *
@@ -96,9 +97,9 @@ public class GameMenu extends Pane {
     }
     
     private void addKeyListeners() {
-        /*exit.setOnAction(e -> {
+        exit.setOnAction(e -> {
             Platform.exit();
-        });*/
+        });
         
         basicTheme.setOnAction(e -> {
             gameMenuCss("/basictheme.css");
