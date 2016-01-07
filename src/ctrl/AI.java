@@ -1,5 +1,6 @@
 package ctrl;
 
+import java.util.Random;
 import vue.drawings.PoneStock;
 
 /**
@@ -10,6 +11,7 @@ public class AI {
     
     private GameCtrl gameCtrl;
     private final int MAX_DEPTH = 7;
+    private Random rand = new Random();
 
     public AI(GameCtrl gameCtrl) {
         this.gameCtrl = gameCtrl;
@@ -23,9 +25,17 @@ public class AI {
             if(gameCtrl.legalMove(co)) {
                 int val = getVal(player, true, co, grid, 0);
                 //System.out.println("co: "+co+" val: "+val);
-                if(maxVal == null || val > maxVal) {
-                    maxVal = val;
-                    maxValCo = co;
+                if(maxVal == null || val >= maxVal) {
+                    if(maxVal != null && val == maxVal) {
+                        if(rand.nextBoolean()){
+                            maxVal = val;
+                            maxValCo = co;
+                        }
+                    }
+                    else {
+                        maxVal = val;
+                        maxValCo = co;
+                    }
                 }
             }
         }
