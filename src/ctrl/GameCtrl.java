@@ -10,7 +10,7 @@ import vue.widgets.GameStage;
  *
  * @author seb
  */
-public class GameCtrl extends Observable {
+public class GameCtrl {
     public static int RED_PLAYER = 1;
     public static int YELLOW_PLAYER = 2;
     private PoneStock rightPoneStock; 
@@ -40,14 +40,14 @@ public class GameCtrl extends Observable {
         newGame();
     }
 
+    public GameGrid getGameGrid() {
+        return gameGrid;
+    }
+
     public void setCurrentPart(Part currentPart) {
         this.currentPart = currentPart;
     }
-    
-    public void dataChanged() {
-        setChanged();
-        notifyObservers();
-    }
+
     
     public boolean gridAddPone(int numCol) {
         // Si la case n'est pas vide
@@ -60,7 +60,7 @@ public class GameCtrl extends Observable {
         ++nbHit[currentPlayer];
         
         // On notifie les observers
-        dataChanged();
+        gameGrid.dataChanged();
         // On passe au joueur suivant
         nextPlayer();
         
@@ -156,7 +156,7 @@ public class GameCtrl extends Observable {
         nbHit[2] = 0;
         gameGrid.setNumRows(new int[] {5,5,5,5,5,5,5});
         cleanGrid();
-        dataChanged();
+        gameGrid.dataChanged();
     }
 
     private boolean checkDraw() {

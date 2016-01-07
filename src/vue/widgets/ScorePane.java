@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import model.GameGrid;
 
 /**
  *
@@ -16,17 +17,16 @@ import javafx.scene.layout.FlowPane;
 // Normalement un Observer observe une classe métier
 // Mais dans notre cas les données métier sont dans les classes
 // GamePane, GameGrid, Pone et PoneStock !
-public class ScorePane extends FlowPane implements Observer{
-    private Observable observable;
+public class ScorePane extends FlowPane implements Observer {
+    private GameCtrl gameCtrl;
     private Image image = new Image("/author.png");
     private ImageView imageView = new ImageView(image);
     private AnimLabel lbRed = new AnimLabel("Red");
     private AnimLabel lbYel= new AnimLabel("Yel");
     
-    public ScorePane(Observable observable) {
-        observable.addObserver(this);
-        this.observable = observable;
-        
+    public ScorePane(GameCtrl gameCtrl) {
+        gameCtrl.getGameGrid().addObserver(this);
+        this.gameCtrl = gameCtrl;
         addLabels();
         colorLabels();
         center();
@@ -35,15 +35,15 @@ public class ScorePane extends FlowPane implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof GameCtrl) {
-            GameCtrl play = (GameCtrl) o;
+        if(o instanceof GameGrid) {
+            GameGrid gameGrid = (GameGrid) o;
             
-            if(play.getCurrentPlayer()== 1) {
-                lbRed.setText(play.getNbHit(GameCtrl.RED_PLAYER));
+            if(gameCtrl.getCurrentPlayer()== 1) {
+                lbRed.setText(gameCtrl.getNbHit(GameCtrl.RED_PLAYER));
                 lbRed.getBlinkThenFade().play();
             }
-            else if(play.getCurrentPlayer()== 2) {
-                lbYel.setText(play.getNbHit(GameCtrl.YELLOW_PLAYER));
+            else if(gameCtrl.getCurrentPlayer()== 2) {
+                lbYel.setText(gameCtrl.getNbHit(GameCtrl.YELLOW_PLAYER));
                 lbYel.getBlinkThenFade().play();
             }
         }
