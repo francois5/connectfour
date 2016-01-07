@@ -18,12 +18,12 @@ import ctrl.SoundFactory;
  */
 public class GameMenu extends Pane {
     private final MenuBar menuBar;
-    private final Label gameMenuLabel;
+    //private final Label gameMenuLabel;
     private final Menu gameMenu;
     private final Menu soundMenu;
     private final Menu styleMenu;
-    //private final MenuItem game;
-    //private final MenuItem exit;
+    private final MenuItem game;
+    private final MenuItem exit;
     private final MenuItem basicTheme;
     private final MenuItem darkTheme;
     private final CheckMenuItem on;
@@ -46,10 +46,13 @@ public class GameMenu extends Pane {
         menuBar.prefWidthProperty().bind(scene.widthProperty());
         
         // menus
-        this.gameMenuLabel = new Label("Menu");
+        //this.gameMenuLabel = new Label("Menu");
         
-        gameMenu = new Menu();
-        gameMenu.setGraphic(gameMenuLabel);
+        
+        gameMenu = new Menu("_Menu");
+        //gameMenu.setGraphic(gameMenuLabel);
+        gameMenu.setMnemonicParsing(true);
+        
         
         soundMenu = new Menu("_Sound");
         soundMenu.setMnemonicParsing(true);
@@ -66,15 +69,16 @@ public class GameMenu extends Pane {
         super.getChildren().add(menuBar);
         
         // création des menu items
-        //game = new MenuItem("Game");
-        //exit = new MenuItem("Exit");
+        game = new MenuItem("Game");
+        exit = new MenuItem("Exit");
         basicTheme = new MenuItem("Basic");
         darkTheme = new MenuItem("Dark");
         
         on = new CheckMenuItem("On");
         on.setSelected(true);
         
-        //gameMenu.getItems().addAll(game, new SeparatorMenuItem(), exit);
+        
+        gameMenu.getItems().addAll(game, new SeparatorMenuItem(), exit);
         
         soundMenu.getItems().addAll(on);
         styleMenu.getItems().addAll(darkTheme, basicTheme);
@@ -114,11 +118,8 @@ public class GameMenu extends Pane {
             }
         });
         
-        this.gameMenuLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                displayMainMenu();
-            }
+        game.setOnAction(e -> {
+            displayMainMenu();
         });
     }
     
