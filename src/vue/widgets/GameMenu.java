@@ -46,8 +46,7 @@ public class GameMenu extends Pane {
         menuBar.prefWidthProperty().bind(scene.widthProperty());
         
         // menus
-        this.gameMenuLabel = new Label("_Menu");
-        gameMenuLabel.setMnemonicParsing(true);
+        this.gameMenuLabel = new Label("Menu");
         
         gameMenu = new Menu();
         gameMenu.setGraphic(gameMenuLabel);
