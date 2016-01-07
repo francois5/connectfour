@@ -46,13 +46,17 @@ public class GameMenu extends Pane {
         menuBar.prefWidthProperty().bind(scene.widthProperty());
         
         // menus
-        this.gameMenuLabel = new Label("Menu");
+        this.gameMenuLabel = new Label("_Menu");
+        gameMenuLabel.setMnemonicParsing(true);
+        
         gameMenu = new Menu();
         gameMenu.setGraphic(gameMenuLabel);
-        //gameMenu.setO
-        soundMenu = new Menu("Sound");
-        //difficulty = new Menu("Difficulty");
-        styleMenu = new Menu("Appearance");
+        
+        soundMenu = new Menu("_Sound");
+        soundMenu.setMnemonicParsing(true);
+        
+        styleMenu = new Menu("_Appearance");
+        styleMenu.setMnemonicParsing(true);
         
         // Ajout des menus dans la barre
         menuBar.getMenus().add(gameMenu);
