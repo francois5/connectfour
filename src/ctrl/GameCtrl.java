@@ -1,6 +1,5 @@
 package ctrl;
 
-import java.util.Observable;
 import model.Part;
 import model.GameGrid;
 import vue.drawings.PoneStock;
@@ -21,12 +20,7 @@ public class GameCtrl {
     private boolean gameEnd = false;
     private boolean computerTurn = false;
     
-    private GameGrid gameGrid = new GameGrid();
-    
-    // numéro du joueur courant
-    private int currentPlayer;
-    public int[] nbHit = new int[3];
-    public int[] nbWin = new int[3];
+    private final GameGrid gameGrid = new GameGrid();
     
     public GameCtrl() {
     }
@@ -53,11 +47,11 @@ public class GameCtrl {
         // Si la case n'est pas vide
         if(!legalMove(numCol) || gameEnd)
             return false;
-        gameGrid.getGrid()[gameGrid.getNumRows()[numCol]][numCol] = currentPlayer;
+        gameGrid.getGrid()[gameGrid.getNumRows()[numCol]][numCol] = gameGrid.getCurrentPlayer();
         //printGrid();
         --gameGrid.getNumRows()[numCol];
         // On incrémente le nombre de coups du joueur courant
-        ++nbHit[currentPlayer];
+        ++gameGrid.getNbHit()[gameGrid.getCurrentPlayer()];
         
         // On notifie les observers
         gameGrid.dataChanged();
@@ -65,7 +59,7 @@ public class GameCtrl {
         nextPlayer();
         
         if(ai.win(gameGrid.getGrid())) {
-            gameStage.winMessage(currentPlayer);
+            gameStage.winMessage(gameGrid.getCurrentPlayer());
             gameEnd = true;
         }
         else if(checkDraw()) {
@@ -73,7 +67,7 @@ public class GameCtrl {
             gameEnd = true;
         }
         if(computerTurn && !gameEnd) {
-            if(currentPlayer == 1)
+            if(gameGrid.getCurrentPlayer() == 1)
                 ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid());
             else
                 ai.play(YELLOW_PLAYER, rightPoneStock, gameGrid.getGrid());
@@ -91,8 +85,8 @@ public class GameCtrl {
     }
     
     public void nextPlayer() {
-        if(currentPlayer == 1) {
-            currentPlayer = 2;
+        if(gameGrid.getCurrentPlayer() == 1) {
+            gameGrid.setCurrentPlayer(2);
             leftPoneStock.disable();
             if(currentPart.getPlayerOne().isComputer()) {
                 rightPoneStock.disable();
@@ -103,8 +97,8 @@ public class GameCtrl {
                 computerTurn = false;
             }
         }
-        else if(currentPlayer == 2) {
-            currentPlayer = 1;
+        else if(gameGrid.getCurrentPlayer() == 2) {
+            gameGrid.setCurrentPlayer(1);
             rightPoneStock.disable();
             if(currentPart.getPlayerTwo().isComputer()) {
                 leftPoneStock.disable();
@@ -128,18 +122,6 @@ public class GameCtrl {
         System.out.println("");
     }
     
-    public int getCurrentPlayer() {
-        return currentPlayer;
-    }
-    
-    public String getNbHit(int player) {
-        return nbHit[player]+"";
-    }
-    
-    public String getWin(int player) {
-        return nbWin[player]+"";
-    }
-    
     private void cleanGrid() {
         for(int i = 0; i < 6; ++i) {
             for(int y = 0; y < 7; ++y)
@@ -148,12 +130,12 @@ public class GameCtrl {
     }
 
     public void newGame() {
-        currentPlayer = 1;
+        gameGrid.setCurrentPlayer(1);
         gameEnd = false;
         rightPoneStock.disable();
         leftPoneStock.enable();
-        nbHit[1] = 0;
-        nbHit[2] = 0;
+        gameGrid.getNbHit()[1] = 0;
+        gameGrid.getNbHit()[2] = 0;
         gameGrid.setNumRows(new int[] {5,5,5,5,5,5,5});
         cleanGrid();
         gameGrid.dataChanged();

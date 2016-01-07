@@ -38,12 +38,12 @@ public class ScorePane extends FlowPane implements Observer {
         if(o instanceof GameGrid) {
             GameGrid gameGrid = (GameGrid) o;
             
-            if(gameCtrl.getCurrentPlayer()== 1) {
-                lbRed.setText(gameCtrl.getNbHit(GameCtrl.RED_PLAYER));
+            if(gameGrid.getCurrentPlayer()== 1) {
+                lbRed.setText(gameGrid.getNbHit(GameCtrl.RED_PLAYER));
                 lbRed.getBlinkThenFade().play();
             }
-            else if(gameCtrl.getCurrentPlayer()== 2) {
-                lbYel.setText(gameCtrl.getNbHit(GameCtrl.YELLOW_PLAYER));
+            else if(gameGrid.getCurrentPlayer()== 2) {
+                lbYel.setText(gameGrid.getNbHit(GameCtrl.YELLOW_PLAYER));
                 lbYel.getBlinkThenFade().play();
             }
         }
