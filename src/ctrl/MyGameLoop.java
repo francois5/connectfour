@@ -10,14 +10,17 @@ import vue.widgets.GamePane;
 public class MyGameLoop extends AnimationTimer {
     
     private GamePane gamePane;
+    private GameCtrl gameCtrl;
 
-    public MyGameLoop(GamePane gamePane) {
+    public MyGameLoop(GamePane gamePane, GameCtrl gameCtrl) {
         this.gamePane = gamePane;
+        this.gameCtrl = gameCtrl;
     }
 
     @Override
     public void handle(long now) {
         gamePane.update();
+        gameCtrl.update();
     }
     
 }

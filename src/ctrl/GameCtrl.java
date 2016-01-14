@@ -68,9 +68,9 @@ public class GameCtrl {
         }
         if(computerTurn && !gameEnd) {
             if(gameGrid.getCurrentPlayer() == 1)
-                ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid());
+                ai.play(RED_PLAYER, leftPoneStock, gameGrid.getGrid(), true);
             else
-                ai.play(YELLOW_PLAYER, rightPoneStock, gameGrid.getGrid());
+                ai.play(YELLOW_PLAYER, rightPoneStock, gameGrid.getGrid(), true);
         }
             
         return true;
@@ -146,6 +146,10 @@ public class GameCtrl {
             if(gameGrid.getGrid()[0][co] == 0)
                 return false;
         return true;
+    }
+
+    void update() {
+        ai.update();
     }
     
 }

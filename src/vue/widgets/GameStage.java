@@ -33,6 +33,7 @@ public class GameStage extends Stage {
     private boolean newPartToStart = true;
     private VBox vBox = new VBox();
     private String gameMode;
+    private Popup popup;
     
     public GameStage() {
         this.setTitle("Puissance 4 - Game");
@@ -48,7 +49,7 @@ public class GameStage extends Stage {
         //root.setCenter(gamePane);
         //root.setBottom(footerPane);
         
-        MyGameLoop loop = new MyGameLoop(gamePane);
+        MyGameLoop loop = new MyGameLoop(gamePane, play);
         loop.start();
         
         gamePane.init(this, scene.getWidth(), scene.getHeight());
@@ -124,8 +125,17 @@ public class GameStage extends Stage {
         showPopupMessage("Draw", this, "draw");
     }
     
+    public boolean closePopup() {
+        if(this.popup != null) {
+            this.popup.hide();
+            return true;
+        }
+        return false;
+    }
+    
     public Popup createPopup(final String message, final String color) {
         final Popup popup = new Popup();
+        this.popup = popup;
         popup.setAutoFix(true);
         popup.setHideOnEscape(true);
         popup.opacityProperty().set(0.8);

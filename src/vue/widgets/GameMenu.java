@@ -120,6 +120,7 @@ public class GameMenu extends Pane {
         });
         
         game.setOnAction(e -> {
+            gameStage.closePopup();
             displayMainMenu();
         });
     }

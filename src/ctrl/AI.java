@@ -12,36 +12,57 @@ public class AI {
     private GameCtrl gameCtrl;
     private final int MAX_DEPTH = 7;
     private Random rand = new Random();
+    private int sleep = 0;
+    private int player;
+    private PoneStock poneStock;
+    private int[][] grid;
 
     public AI(GameCtrl gameCtrl) {
         this.gameCtrl = gameCtrl;
     }
     
-    public boolean play(int player, PoneStock poneStock, int[][] grid) {
-        Integer maxVal = null;
-        Integer maxValCo = null;
-        //System.out.println("co: "+0+" val: "+maxVal);
-        for(int co = 0; co < 7; ++co) {
-            if(gameCtrl.legalMove(co)) {
-                int val = getVal(player, true, co, grid, 0);
-                //System.out.println("co: "+co+" val: "+val);
-                if(maxVal == null || val >= maxVal) {
-                    if(maxVal != null && val == maxVal) {
-                        if(rand.nextBoolean()){
+    public void update() {
+        if(sleep == 0)
+            return;
+        else if (sleep == 1) {
+            --sleep;
+            this.play(player, poneStock, grid, false);
+        } else
+            --sleep;
+    }
+    
+    public boolean play(int player, PoneStock poneStock, int[][] grid, boolean external) {
+        if(external) {
+            this.player = player;
+            this.poneStock = poneStock;
+            this.grid = grid;
+            sleep = 100;
+        }
+        else {
+            Integer maxVal = null;
+            Integer maxValCo = null;
+            //System.out.println("co: "+0+" val: "+maxVal);
+            for (int co = 0; co < 7; ++co) {
+                if (gameCtrl.legalMove(co)) {
+                    int val = getVal(player, true, co, grid, 0);
+                    //System.out.println("co: "+co+" val: "+val);
+                    if (maxVal == null || val >= maxVal) {
+                        if (maxVal != null && val == maxVal) {
+                            if (rand.nextBoolean()) {
+                                maxVal = val;
+                                maxValCo = co;
+                            }
+                        } else {
                             maxVal = val;
                             maxValCo = co;
                         }
                     }
-                    else {
-                        maxVal = val;
-                        maxValCo = co;
-                    }
                 }
             }
-        }
-        if(maxValCo != null) {
-            poneStock.autoMove(maxValCo);
-            return true;
+            if (maxValCo != null) {
+                poneStock.autoMove(maxValCo);
+                return true;
+            }
         }
         return false;
     }
