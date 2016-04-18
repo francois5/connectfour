@@ -1,6 +1,7 @@
-// Ce style est initialisé à chaque nouvelle partie
-// et a chaque choix "basic" du menu Appearance
-
+/* 
+ *Ce style est initialisé à chaque nouvelle partie
+ *et a chaque choix "basic" du menu Appearance
+ */
 .root {
     -fx-background-image: url('textureBrown.jpg');
 }

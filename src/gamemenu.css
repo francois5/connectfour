@@ -6,7 +6,7 @@
     -fx-background-color: derive(#1d1d1d,20%);
 }
 
-// Contexte menu du MenuBar
+/* Contexte menu du MenuBar*/
 .context-menu {
     -fx-background-color: derive(#1d1d1d,50%);
 }
@@ -76,7 +76,7 @@
     -fx-background-color: derive(-fx-focus-color,30%);
 }
 
-// Couleur des Pone 
+/* Couleur des Pone */
 .right-stock {
     -fx-fill: linear-gradient(#ff1400, #be1d00);
 }
@@ -85,12 +85,12 @@
     -fx-fill: linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%);
 }
 
-// Couleur des pieds
+/* Couleur des pieds*/
 .leg {
     -fx-fill: linear-gradient(#022a88, #395cab);
 }
 
-// Taille et couleur des labels pour le nombre de coups
+/* Taille et couleur des labels pour le nombre de coups*/
 .scorePane-lbRed {
     -fx-font-size: 30pt;
     -fx-font-family: "Segoe UI Semibold";

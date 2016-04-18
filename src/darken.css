@@ -1,5 +1,7 @@
-// Ce style est initialisé lors de l'appel à HomeStage
-// via le menu Game
+/* 
+ * Ce style est initialisé lors de l'appel à HomeStage
+ * via le menu Game
+ */ 
 
 .root {
     -fx-background-image : url('textureBlack.jpg');
